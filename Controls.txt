@@ -1,0 +1,32 @@
+ROBOT CONTROLS
+
+CONTROLLER 1
+
+MOVEMENT
+    Right stick COMPLETE
+    Left stick COMPLETE
+    D-Pad
+
+TURNING
+    Right trigger (turn right) COMPLETE
+    Left trigger (turn left) COMPLETE
+
+ACTUATOR
+    X (toggle actuator) COMPLETE
+
+MISCELLANEOUS
+    Right stick click (break)
+    Left stick click (break)
+    back (toggle inverse controls) COMPLETE
+    B (read off specific rules)
+    
+CONTROLLER 2
+
+INTAKE
+    Right trigger (Intake speed) COMPLETE
+    A + right trigger (reverse) COMPLETE
+    Y (toggle intake position)
+    
+AUGUR
+    Left trigger (Augur speed)
+    B + left trigger (reverse)

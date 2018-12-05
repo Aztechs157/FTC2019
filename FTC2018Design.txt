@@ -1,0 +1,317 @@
+import packages
+
+structure controller
+    real rightStickX
+    real rightStickY
+    real leftStickX
+    real leftStickY
+    boolean dpadUp
+    boolean dpadRight
+    boolean dpadLeft
+    boolean dpadDown
+    boolean buttonA
+    boolean buttonB
+    boolean buttonX
+    boolean buttonY
+    boolean rightBumper
+    boolean leftBumper
+    real rightTrigger
+    real leftTrigger
+    boolean start
+    boolean back
+    boolean rightStick
+    boolean leftStick
+end structure
+
+DcMotor driveMotors[] = [new DcMotor, new DcMotor, new DcMotor, new DcMotor]
+DcMotor miscMotors[] = [new DcMotor, new DcMotor]
+boolean inverseControls = false
+boolean intakeOut = false
+
+function motorsetup()
+    
+
+function variablesetup1()
+    //Variable setup for joysticks and dpad on controller 1
+    real rightStickX1 = get the x value of the right stick on the controller
+    real rightStickY1 = get the y value of the right stick on the controller
+    real leftStickX1 = get the x value of the left stick on the controller
+    real leftStickY1 = get the y value of the left stick on the controller
+
+    //Variable setup for buttons on controller 1
+    boolean dpadUp1 = get the up button
+    boolean dpadRight1 = get the right button
+    boolean dpadLeft1 = get the left button
+    boolean dpadDown1 = get the down button
+    boolean buttonA1 = get button a
+    boolean buttonB1 = get button b
+    boolean buttonX1 = get button x
+    boolean buttonY1 = get button y
+    boolean rightBumper1 = get right bumper
+    boolean leftBumper1 = get left bumper
+
+    //Variable setup for triggers on controller 1
+    real rightTrigger1 = get right trigger
+    real leftTrigger1 = get left trigger
+    
+    //Variable setup for miscellaneous on controller 1
+    boolean start1 = get start button
+    boolean back1 = get back button
+    boolean rightStick1 = get right stick button
+    boolean leftStick1 = get left stick button
+
+    //Controller 1 setup
+    controller input1 = new controller
+    controller.rightStickX = rightStickX1
+    controller.rightStickY = rightStickY1
+    controller.leftStickX = leftStickX1
+    controller.leftStickY = leftStickY1
+    controller.dpadX = dpadX1
+    controller.dpadY = dpadY1
+    controller.buttonA = buttonA1
+    controller.buttonB = buttonB1
+    controller.buttonX = buttonX1
+    controller.buttonY = buttonY1
+    controller.rightBumper = rightBumper1
+    controller.leftBumper = leftBumper1
+    controller.rightTrigger = rightTrigger1
+    controller.leftTrigger = leftTrigger1
+    controller.start = start1
+    controller.back = back1
+    controller.rightStick = rightStick1
+    controller.leftStick = leftStick1
+    
+    return input1
+end function variablesetup1
+
+function variablesetup2()
+    //Variable setup for joysticks and dpad on controller 2
+    real rightStickX2 = get the x value of the right stick on the controller
+    real rightStickY2 = get the y value of the right stick on the controller
+    real leftStickX2 = get the x value of the left stick on the controller
+    real leftStickY2 = get the y value of the left stick on the controller
+
+    //Variable setup for buttons on controller 2
+    boolean dpadUp2 = get the up button
+    boolean dpadRight2 = get the right button
+    boolean dpadLeft2 = get the left button
+    boolean dpadDown2 = get the down button
+    boolean buttonA2 = get button a
+    boolean buttonB2 = get button b
+    boolean buttonX2 = get button x
+    boolean buttonY2 = get button y
+    boolean rightBumper2 = get right bumper
+    boolean leftBumper2 = get left bumper
+
+    //Variable setup for triggers on controller 2
+    real rightTrigger2 = get right trigger
+    real leftTrigger2 = get left trigger
+    
+    //Variable setup for miscellaneous on controller 2
+    boolean start2 = get start button
+    boolean back2 = get back button
+    boolean rightStick2 = get right stick button
+    boolean leftStick2 = get left stick button
+
+    //Controller 2 setup
+    controller input2 = new controller
+    controller.rightStickX = rightStickX2
+    controller.rightStickY = rightStickY2
+    controller.leftStickX = leftStickX2
+    controller.leftStickY = leftStickY2
+    controller.dpadX = dpadX2
+    controller.dpadY = dpadY2
+    controller.buttonA = buttonA2
+    controller.buttonB = buttonB2
+    controller.buttonX = buttonX2
+    controller.buttonY = buttonY2
+    controller.rightBumper = rightBumper2
+    controller.leftBumper = leftBumper2
+    controller.rightTrigger = rightTrigger2
+    controller.leftTrigger = leftTrigger2
+    controller.start = start2
+    controller.back = back2
+    controller.rightStick = rightStick2
+    controller.leftStick = leftStick2
+    
+    return input2
+end function variablesetup2
+
+function driveMode(controller input1)
+    if input1.back == true && inverseControls == false then
+        inverseControls = true
+    else if input1.back == true && inverseControls == true then
+        inverseControls == false
+    end if
+    return inverseControls
+end function driveMode
+
+function setmovement(controller input1, inverseControls)
+    real motor1 = 0
+    real motor2 = 0
+    real motor3 = 0
+    real motor4 = 0
+    
+    if inverseControls == true then
+        real x = input1.leftStickX
+        real y = input1.leftStickY
+    else
+        real x = input1.rightStickX
+        real y = input1.rightStickY
+    
+    if x >= 0 && y >= 0 then
+        motor1 = y - x
+        motor2 = min(-x, -y)
+        motor3 = x - y
+        motor4 = max(x, y)
+    else if x >= 0 && y < 0 then
+        motor1 = min(-x, y)
+        motor2 = |y| - x
+        motor3 = max(x, -y)
+        motor4 = x - |y|
+    else if x < 0 && y >= 0 then
+        motor1 = max(-x, y)
+        motor2 = |x| - y
+        motor3 = min(x, -y)
+        motor4 = y - |x|
+    else if x < 0 && y < 0 then
+        motor1 = |x| - |y|
+        motor2 = max(-x, -y)
+        motor3 = |y| - |x|
+        motor4 = min(x, y)
+    else
+        motor1 = 0
+        motor2 = 0
+        motor3 = 0
+        motor4 = 0
+    end if
+    real motorTotal = motor1 + motor2 + motor3 + motor4
+    real motors[] = [motor1, motor2, motor3, motor4, motorTotal]
+    
+    return motors[]
+end function setmovement
+
+function negative(real n)
+    newN = -|n|
+    return newN
+end function
+
+function turning(real motors[], controller input1)
+    if inverseControls == true then
+        real x = input1.leftStickX
+        real y = input1.leftStickY
+    else
+        real x = input1.rightStickX
+        real y = input1.rightStickY
+        
+    real turningRate = input1.rightTrigger - input1.leftTrigger
+    
+    if motors[4] == 0
+        motors[0] = turningRate
+        motors[1] = turningRate
+        motors[2] = turningRate
+        motors[3] = turningRate
+    else
+        if turningRate >= 0
+            if -x >= |y| then
+                motors[0] = motors[0] - 2(y - negative(x))turningRate + (1 + x) * turningRate
+            else if y > |x| then
+                motor[0] += (1 - y) * turningRate
+            else if x > |y| then
+                motor[0] += (1 - x) * turningRate
+            else
+                motor[0] += (1 + y) * turningRate
+            end if
+            
+            if |x| < -y then
+                motors[1] = motors[1] + 2(y + |x|)turningRate + (1 + y) * turningRate 
+            else if y > |x| then
+                motor[0] += (1 - y) * turningRate
+            else if x > |y| then
+                motor[0] += (1 - x) * turningRate
+            else
+                motor[0] += (1 + x) * turningRate
+            end if
+            
+            if x > |y| then
+                motors[2] = motors[2] + 2(|y| - x)turningRate
+            end if
+            
+            if |x| < y
+                motors[3] = motors[3] - 2(y - |x|)turningRate
+            end if
+            
+        else
+            if -x >=|y|
+                motors[0] = motors[0] + 2(negative(y) - x)turningRate
+            end if
+            
+            if |x| < y
+                motors[1] = motors[1] - 2(negative(y) + x)turningRate
+            end if
+            
+            if x > |y|
+                motors[2] = motors[2] - 2(y - |x|)turningRate
+            end if
+            
+            if negative(y) > x
+                motors[3] = motors[3] - 2(negative(y) - x)turningRate
+            end if
+            
+    return motors[]
+end function turning
+
+procedure drive(real motors[])
+    driveMotors[0].setPower(motors[0])
+    driveMotors[1].setPower(motors[1])
+    driveMotors[2].setPower(motors[2])
+    driveMotors[3].setPower(motors[3])
+end procedure drive
+
+procedure actuator(controller input1)
+    boolean actuator = false
+    
+    if input1.buttonX == true and actuator == false then
+        set actuator motor to 1
+        wait for the actuator to get to full extension
+        set actuator motor to 0
+        actuator = true
+    
+    else if input1.buttonX == true and actuator == true then
+        set actuator motor to -1
+        wait for the actuator to fully retract
+        set actuator motor to 0
+        actuator = false
+    end if
+end procedure actuator
+
+procedure intakeposition(controller input2, Servo servos[], boolean intakeOut)
+    if input2.buttonY == true && intakeOut == false then
+        servo.setPosition(servos[2]) = 90
+        servo.setPosition(servos[3]) = 90
+        intakeOut = true
+    else if input2.buttonY == true && intakeOut == true
+        servo.setPosition(servos[2]) = 0
+        servo.setPosition(servos[3]) = 0
+        intakeOut = false
+    end if
+end procedure intakeposition
+
+procedure intake(controller input2, Servo servos[])
+    if input2.rightTrigger > 0 && input2.buttonA then
+        servos[0] = (1 - input2.rightTrigger) * 90
+        servos[1] = input2.rightTrigger * 90 + 90
+    else if input2.rightTrigger > 0 then
+        servos[0] = input2.rightTrigger * 90 + 90
+        servos[1] = (1 - input2.rightTrigger) * 90
+    end if
+end procedure intake
+
+procedure augur(controller input2, miscMotors[])
+     if input2.leftTrigger > 0 && input2.buttonB then
+        miscMotors[1].setPower(-input2.leftTrigger)
+    else if input2.rightTrigger > 0 then
+        miscMotors[1].setPower(input2.leftTrigger)
+    end if
+end procedure augur
+

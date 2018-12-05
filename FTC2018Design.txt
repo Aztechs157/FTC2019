@@ -1,141 +1,9 @@
 import packages
 
-structure controller
-    real rightStickX
-    real rightStickY
-    real leftStickX
-    real leftStickY
-    boolean dpadUp
-    boolean dpadRight
-    boolean dpadLeft
-    boolean dpadDown
-    boolean buttonA
-    boolean buttonB
-    boolean buttonX
-    boolean buttonY
-    boolean rightBumper
-    boolean leftBumper
-    real rightTrigger
-    real leftTrigger
-    boolean start
-    boolean back
-    boolean rightStick
-    boolean leftStick
-end structure
-
 DcMotor driveMotors[] = [new DcMotor, new DcMotor, new DcMotor, new DcMotor]
 DcMotor miscMotors[] = [new DcMotor, new DcMotor]
 boolean inverseControls = false
 boolean intakeOut = false
-
-function motorsetup()
-    
-
-function variablesetup1()
-    //Variable setup for joysticks and dpad on controller 1
-    real rightStickX1 = get the x value of the right stick on the controller
-    real rightStickY1 = get the y value of the right stick on the controller
-    real leftStickX1 = get the x value of the left stick on the controller
-    real leftStickY1 = get the y value of the left stick on the controller
-
-    //Variable setup for buttons on controller 1
-    boolean dpadUp1 = get the up button
-    boolean dpadRight1 = get the right button
-    boolean dpadLeft1 = get the left button
-    boolean dpadDown1 = get the down button
-    boolean buttonA1 = get button a
-    boolean buttonB1 = get button b
-    boolean buttonX1 = get button x
-    boolean buttonY1 = get button y
-    boolean rightBumper1 = get right bumper
-    boolean leftBumper1 = get left bumper
-
-    //Variable setup for triggers on controller 1
-    real rightTrigger1 = get right trigger
-    real leftTrigger1 = get left trigger
-    
-    //Variable setup for miscellaneous on controller 1
-    boolean start1 = get start button
-    boolean back1 = get back button
-    boolean rightStick1 = get right stick button
-    boolean leftStick1 = get left stick button
-
-    //Controller 1 setup
-    controller input1 = new controller
-    controller.rightStickX = rightStickX1
-    controller.rightStickY = rightStickY1
-    controller.leftStickX = leftStickX1
-    controller.leftStickY = leftStickY1
-    controller.dpadX = dpadX1
-    controller.dpadY = dpadY1
-    controller.buttonA = buttonA1
-    controller.buttonB = buttonB1
-    controller.buttonX = buttonX1
-    controller.buttonY = buttonY1
-    controller.rightBumper = rightBumper1
-    controller.leftBumper = leftBumper1
-    controller.rightTrigger = rightTrigger1
-    controller.leftTrigger = leftTrigger1
-    controller.start = start1
-    controller.back = back1
-    controller.rightStick = rightStick1
-    controller.leftStick = leftStick1
-    
-    return input1
-end function variablesetup1
-
-function variablesetup2()
-    //Variable setup for joysticks and dpad on controller 2
-    real rightStickX2 = get the x value of the right stick on the controller
-    real rightStickY2 = get the y value of the right stick on the controller
-    real leftStickX2 = get the x value of the left stick on the controller
-    real leftStickY2 = get the y value of the left stick on the controller
-
-    //Variable setup for buttons on controller 2
-    boolean dpadUp2 = get the up button
-    boolean dpadRight2 = get the right button
-    boolean dpadLeft2 = get the left button
-    boolean dpadDown2 = get the down button
-    boolean buttonA2 = get button a
-    boolean buttonB2 = get button b
-    boolean buttonX2 = get button x
-    boolean buttonY2 = get button y
-    boolean rightBumper2 = get right bumper
-    boolean leftBumper2 = get left bumper
-
-    //Variable setup for triggers on controller 2
-    real rightTrigger2 = get right trigger
-    real leftTrigger2 = get left trigger
-    
-    //Variable setup for miscellaneous on controller 2
-    boolean start2 = get start button
-    boolean back2 = get back button
-    boolean rightStick2 = get right stick button
-    boolean leftStick2 = get left stick button
-
-    //Controller 2 setup
-    controller input2 = new controller
-    controller.rightStickX = rightStickX2
-    controller.rightStickY = rightStickY2
-    controller.leftStickX = leftStickX2
-    controller.leftStickY = leftStickY2
-    controller.dpadX = dpadX2
-    controller.dpadY = dpadY2
-    controller.buttonA = buttonA2
-    controller.buttonB = buttonB2
-    controller.buttonX = buttonX2
-    controller.buttonY = buttonY2
-    controller.rightBumper = rightBumper2
-    controller.leftBumper = leftBumper2
-    controller.rightTrigger = rightTrigger2
-    controller.leftTrigger = leftTrigger2
-    controller.start = start2
-    controller.back = back2
-    controller.rightStick = rightStick2
-    controller.leftStick = leftStick2
-    
-    return input2
-end function variablesetup2
 
 function driveMode(controller input1)
     if input1.back == true && inverseControls == false then
@@ -196,7 +64,7 @@ function negative(real n)
     return newN
 end function
 
-function turning(real motors[], controller input1)
+function turning(real motors[], controller input1, inverseControls)
     if inverseControls == true then
         real x = input1.leftStickX
         real y = input1.leftStickY
@@ -315,3 +183,15 @@ procedure augur(controller input2, miscMotors[])
     end if
 end procedure augur
 
+while opModeIsActive do
+    driveMode(input1)
+    setmovement(input1, inverseControls)
+    turning(motors[], input1, inverseControls)
+    drive(motors[])
+    actuator(input1)
+    intakeposition(input2, servos[], intakeOut)
+    intake(input2, servos[])
+    augur(input2, miscMotors[])
+end while
+    
+    

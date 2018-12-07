@@ -15,6 +15,7 @@ public class opMode extends LinearOpMode {
     Gamepad driver = null;
     Gamepad operator = null;
     boolean actuator = false;
+    PID actuatorController;
 
     void drivemode(Gamepad input)
     {
@@ -97,9 +98,29 @@ public class opMode extends LinearOpMode {
         }
     }
 
+    public void actuator(Gamepad input1)
+    {
+        float target;
+        if (input1.x)
+        {
+            actuator = !actuator;
+        }
+        if (actuator)
+        {
+            target = 100; //TODO: not correct value
+        }
+        else
+        {
+            target = 0;
+        }
+        float val = (float)actuatorController.pidCalculate(target,
+                miscMotors[0].getCurrentPosition());
+        miscMotors[0].setPower(val);
+    }
+
     public void intake(Gamepad input, ServoController servos[])
     {
-        if input.right_trigger > 0 && input.a
+        if (input.right_trigger > 0 && input.a)
         {
             servos[0].setServoPosition(0, (1 - input.right_trigger) * 90);
             servos[1].setServoPosition(1, input.right_trigger * 90 + 90);

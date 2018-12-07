@@ -132,6 +132,18 @@ public class opMode extends LinearOpMode {
         }
     }
 
+    public void augur(Gamepad input, miscMotors[])
+    {
+        if (input.left_trigger > 0 && input.b)
+        {
+            miscMotors[1].setPower(-input.left_trigger);
+        }
+        else if (input.left_trigger > 0)
+        {
+            miscMotors[1].setPower(input.left_trigger);
+        }
+    }
+
     @Override
     public void runOpMode() {
 

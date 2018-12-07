@@ -4,6 +4,7 @@ DcMotor driveMotors[] = [new DcMotor, new DcMotor, new DcMotor, new DcMotor]
 DcMotor miscMotors[] = [new DcMotor, new DcMotor]
 boolean inverseControls = false
 boolean intakeOut = false
+boolean actuator = false
 
 function driveMode(controller input1)
     if input1.back == true && inverseControls == false then
@@ -137,21 +138,34 @@ procedure drive(real motors[])
 end procedure drive
 
 procedure actuator(controller input1)
-    boolean actuator = false
-    
-    if input1.buttonX == true and actuator == false then
-        set actuator motor to 1
-        wait for the actuator to get to full extension
-        set actuator motor to 0
-        actuator = true
-    
-    else if input1.buttonX == true and actuator == true then
-        set actuator motor to -1
-        wait for the actuator to fully retract
-        set actuator motor to 0
-        actuator = false
-    end if
+	real target
+	if input1.buttonX == true then
+		actuator = !actuator
+	end if
+	if actuator then
+		target = 100
+	else 
+		target = 0
+	end if
+	output pid(current, target) to actuator motor
 end procedure actuator
+
+							procedure actuator(controller input1)
+								boolean actuator = false
+								
+								if input1.buttonX == true and actuator == false then
+									set actuator motor to 1
+									wait for the actuator to get to full extension
+									set actuator motor to 0
+									actuator = true
+			doesn't work ->					
+								else if input1.buttonX == true and actuator == true then
+									set actuator motor to -1
+									wait for the actuator to fully retract
+									set actuator motor to 0
+									actuator = false
+								end if
+							end procedure actuator
 
 procedure intakeposition(controller input2, Servo servos[], boolean intakeOut)
     if input2.buttonY == true && intakeOut == false then

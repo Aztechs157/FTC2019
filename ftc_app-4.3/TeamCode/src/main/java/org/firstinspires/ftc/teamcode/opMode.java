@@ -14,6 +14,7 @@ public class opMode extends LinearOpMode {
     boolean intakeOut = false;
     Gamepad driver = null;
     Gamepad operator = null;
+    boolean actuator = false;
 
     void drivemode(Gamepad input)
     {

@@ -16,6 +16,8 @@ public class opMode extends LinearOpMode {
     Gamepad operator = null;
     boolean actuator = false;
     PID actuatorController;
+    double motors[] = {null, null, null, null, null};
+    double servos[] = {0, 0};
 
     void drivemode(Gamepad input)
     {
@@ -145,8 +147,20 @@ public class opMode extends LinearOpMode {
     }
 
     @Override
-    public void runOpMode() {
-
+    public void runOpMode()
+    {
+        while (opModeIsActive())
+        {
+            drivemode(driver);
+            setmovement(driver, inverseControls);
+            //turning(motors[], driver, inverseControls);
+            drive(motors[]);
+            actuator(driver);
+            intakeposition(operator, servos[], intakeOut);
+            intake(operator, servos[]);
+            augur(operator, miscMotors[]);
+            
+        }
     }
 }
 

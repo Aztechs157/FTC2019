@@ -24,7 +24,7 @@ public class opMode extends LinearOpMode {
             inverseControls = !inverseControls;
         }
     }
-    double abs(double x)
+    private double abs(double x)
     {
         return Math.abs(x);
     }
@@ -77,7 +77,7 @@ public class opMode extends LinearOpMode {
         driveMotors[2].setPower(motors[2]);
         driveMotors[3].setPower(motors[3]);
     }
-    double n(double x)
+    private double n(double x)
     {
         return -abs(x);
     }
@@ -132,7 +132,7 @@ public class opMode extends LinearOpMode {
         }
     }
 
-    public void augur(Gamepad input, miscMotors[])
+    public void augur(Gamepad input, DcMotor miscMotors[])
     {
         if (input.left_trigger > 0 && input.b)
         {

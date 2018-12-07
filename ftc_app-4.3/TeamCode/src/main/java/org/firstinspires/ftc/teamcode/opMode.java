@@ -97,6 +97,19 @@ public class opMode extends LinearOpMode {
         }
     }
 
+    public void intake(Gamepad input, ServoController servos[])
+    {
+        if input.right_trigger > 0 && input.a
+        {
+            servos[0].setServoPosition(0, (1 - input.right_trigger) * 90);
+            servos[1].setServoPosition(1, input.right_trigger * 90 + 90);
+        }
+        else if (input.right_trigger > 0)
+        {
+            servos[0].setServoPosition(0, input.right_trigger * 90 + 90);
+            servos[1].setServoPosition(1, (1 - input.right_trigger) * 90);
+        }
+    }
 
     @Override
     public void runOpMode() {

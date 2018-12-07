@@ -79,6 +79,21 @@ public class opMode extends LinearOpMode {
         return -abs(x);
     }
 
+    public void intakeposition(gamepad input, servo servos[], boolean intakeOut)
+    {
+        if (input.y && !intakeOut)
+        {
+            servos[2].setPosition(90);
+            servos[3].setPosition(90);
+            intakeOut = true;
+        }
+        else if (input.y && intakeOut)
+        {
+            servos[2].setPosition(0);
+            servos[3].setPostition(0);
+            intakeOut = false;
+        }
+    }
     @Override
     public void runOpMode() {
 

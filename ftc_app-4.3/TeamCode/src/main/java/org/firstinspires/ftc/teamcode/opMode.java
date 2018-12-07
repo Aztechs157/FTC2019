@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.ServoController;
 
 @TeleOp
 public class opMode extends LinearOpMode {
@@ -79,21 +80,23 @@ public class opMode extends LinearOpMode {
         return -abs(x);
     }
 
-    public void intakeposition(gamepad input, servo servos[], boolean intakeOut)
+    public void intakeposition(Gamepad input, ServoController servos[], boolean intakeOut)
     {
         if (input.y && !intakeOut)
         {
-            servos[2].setPosition(90);
-            servos[3].setPosition(90);
+            servos[2].setServoPosition(2, 90);
+            servos[3].setServoPosition(3, 90);
             intakeOut = true;
         }
         else if (input.y && intakeOut)
         {
-            servos[2].setPosition(0);
-            servos[3].setPostition(0);
+            servos[2].setServoPosition(2, 0);
+            servos[3].setServoPosition(3, 0);
             intakeOut = false;
         }
     }
+
+
     @Override
     public void runOpMode() {
 

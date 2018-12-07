@@ -152,13 +152,13 @@ public class opMode extends LinearOpMode {
         while (opModeIsActive())
         {
             drivemode(driver);
-            setmovement(driver, inverseControls);
+            double motors[] = setmovement(driver);
             //turning(motors[], driver, inverseControls);
-            drive(motors[]);
+            drive(motors);
             actuator(driver);
-            intakeposition(operator, servos[], intakeOut);
-            intake(operator, servos[]);
-            augur(operator, miscMotors[]);
+            intakeposition(operator, servos, intakeOut);
+            intake(operator, servos);
+            augur(operator, miscMotors);
             
         }
     }

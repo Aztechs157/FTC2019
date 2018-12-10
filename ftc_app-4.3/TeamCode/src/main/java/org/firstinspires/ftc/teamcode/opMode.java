@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
 
 @TeleOp
-public class opMode extends LinearOpMode {
+public class opMode extends LinearOpMode
+{
     private DcMotor driveMotors[] = {null, null, null, null};
     private DcMotor miscMotors[] = {null, null};
     private boolean inverseControls = false;
@@ -28,6 +29,7 @@ public class opMode extends LinearOpMode {
             inverseControls = !inverseControls;
         }
     }
+
     private double abs(double x)
     {
         return Math.abs(x);
@@ -43,37 +45,38 @@ public class opMode extends LinearOpMode {
             x = input.left_stick_x;
             y = input.left_stick_y;
         }
-        if (x>=0 && y >= 0)
+        if (x >= 0 && y >= 0)
         {
-            motors[0] = y-x;
+            motors[0] = y - x;
             motors[1] = Math.min(-x, -y);
-            motors[2] = x-y;
+            motors[2] = x - y;
             motors[3] = Math.max(x, y);
         }
-        else if (x>=0)
+        else if (x >= 0)
         {
             motors[0] = Math.min(-x, y);
-            motors[1] = abs(y)-x;
+            motors[1] = abs(y) - x;
             motors[2] = Math.max(x, -y);
-            motors[3] = x-abs(y);
+            motors[3] = x - abs(y);
         }
-        else if (x<0 && y >= 0)
+        else if (x < 0 && y >= 0)
         {
             motors[0] = Math.max(-x, y);
-            motors[1] = abs(x)-y;
+            motors[1] = abs(x) - y;
             motors[2] = Math.min(x, -y);
-            motors[3] = y-abs(x);
+            motors[3] = y - abs(x);
         }
         else
         {
-            motors[0] = abs(x)-abs(y);
+            motors[0] = abs(x) - abs(y);
             motors[1] = Math.max(-x, -y);
-            motors[2] = abs(y)-abs(x);
+            motors[2] = abs(y) - abs(x);
             motors[3] = Math.min(x, y);
         }
         motors[4] = motors[0] + motors[1] + motors[2] + motors[3];
         return motors;
     }
+
     public void drive(double[] motors)
     {
         driveMotors[0].setPower(motors[0]);
@@ -81,6 +84,7 @@ public class opMode extends LinearOpMode {
         driveMotors[2].setPower(motors[2]);
         driveMotors[3].setPower(motors[3]);
     }
+
     private double n(double x)
     {
         return -abs(x);
@@ -117,8 +121,8 @@ public class opMode extends LinearOpMode {
         {
             target = 0;
         }
-        float val = (float)actuatorController.pidCalculate(target,
-                miscMotors[0].getCurrentPosition());
+        float val = (float) actuatorController.pidCalculate(target,
+                                                            miscMotors[0].getCurrentPosition());
         miscMotors[0].setPower(val);
     }
 
@@ -162,7 +166,7 @@ public class opMode extends LinearOpMode {
             intakeposition(operator, servos, intakeOut);
             intake(operator, servos);
             augur(operator, miscMotors);
-            
+
         }
     }
 }

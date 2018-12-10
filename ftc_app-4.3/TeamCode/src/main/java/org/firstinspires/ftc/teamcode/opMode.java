@@ -4,20 +4,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
 
 @TeleOp
 public class opMode extends LinearOpMode {
-    DcMotor driveMotors[] = {null, null, null, null};
-    DcMotor miscMotors[] = {null, null};
-    boolean inverseControls = false;
-    boolean intakeOut = false;
-    Gamepad driver = null;
-    Gamepad operator = null;
-    boolean actuator = false;
-    PID actuatorController;
-    double motors[] = {null, null, null, null, null};
-    double servos[] = {0, 0};
+    private DcMotor driveMotors[] = {null, null, null, null};
+    private DcMotor miscMotors[] = {null, null};
+    private boolean inverseControls = false;
+    private boolean intakeOut = false;
+    private Gamepad driver = null;
+    private Gamepad operator = null;
+    private boolean actuator = false;
+    private PID actuatorController;
+    private double motors[] = {0, 0, 0, 0, 0};
+    private Servo servos[] = {null, null};
+
 
     void drivemode(Gamepad input)
     {
@@ -84,18 +86,18 @@ public class opMode extends LinearOpMode {
         return -abs(x);
     }
 
-    public void intakeposition(Gamepad input, ServoController servos[], boolean intakeOut)
+    public void intakeposition(Gamepad input, Servo servos[], boolean intakeOut)
     {
         if (input.y && !intakeOut)
         {
-            servos[2].setServoPosition(2, 90);
-            servos[3].setServoPosition(3, 90);
+            servos[2].setPosition(90);
+            servos[3].setPosition(90);
             intakeOut = true;
         }
         else if (input.y && intakeOut)
         {
-            servos[2].setServoPosition(2, 0);
-            servos[3].setServoPosition(3, 0);
+            servos[2].setPosition(0);
+            servos[3].setPosition(0);
             intakeOut = false;
         }
     }
@@ -120,17 +122,17 @@ public class opMode extends LinearOpMode {
         miscMotors[0].setPower(val);
     }
 
-    public void intake(Gamepad input, ServoController servos[])
+    public void intake(Gamepad input, Servo servos[])
     {
         if (input.right_trigger > 0 && input.a)
         {
-            servos[0].setServoPosition(0, (1 - input.right_trigger) * 90);
-            servos[1].setServoPosition(1, input.right_trigger * 90 + 90);
+            servos[0].setPosition(-input.right_trigger);
+            servos[1].setPosition(input.right_trigger);
         }
         else if (input.right_trigger > 0)
         {
-            servos[0].setServoPosition(0, input.right_trigger * 90 + 90);
-            servos[1].setServoPosition(1, (1 - input.right_trigger) * 90);
+            servos[0].setPosition(input.right_trigger);
+            servos[1].setPosition(-input.right_trigger);
         }
     }
 
@@ -149,6 +151,7 @@ public class opMode extends LinearOpMode {
     @Override
     public void runOpMode()
     {
+        driveMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "drive1"),};
         while (opModeIsActive())
         {
             drivemode(driver);

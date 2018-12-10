@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
+import com.sun.tools.javac.comp.Todo;
 
 @TeleOp
 public class opMode extends LinearOpMode
@@ -155,7 +156,17 @@ public class opMode extends LinearOpMode
     @Override
     public void runOpMode()
     {
-        driveMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "drive1"),};
+        driveMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "drive1"),
+                                    hardwareMap.get(DcMotor.class, "drive2"),
+                                    hardwareMap.get(DcMotor.class, "drive3"),
+                                    hardwareMap.get(DcMotor.class, "drive4")};
+        gamepad1 = new Gamepad();
+        gamepad2 = new Gamepad();
+        //TODO: make sure gamepads are assigned right
+        actuatorController = new PID(0.01, 0, 0.00000, 999999,
+                                     99999, 999999, 9999999);
+        servos = new Servo[]{hardwareMap.get(Servo.class, "intake1"),
+                             hardwareMap.get(Servo.class, "intake2")};
         while (opModeIsActive())
         {
             drivemode(driver);

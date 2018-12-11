@@ -295,7 +295,7 @@ public class opMode extends LinearOpMode
             drive(motors);
             actuator(driver);
             //intakeposition(operator, servos, intakeOut);
-            intake(operator, servos);
+            intake(operator, miscMotors);
             //augur(operator, miscMotors);
 
         }

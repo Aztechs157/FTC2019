@@ -167,16 +167,19 @@ public class opMode extends LinearOpMode
                                      99999, 999999, 9999999);
         servos = new Servo[]{hardwareMap.get(Servo.class, "intake1"),
                              hardwareMap.get(Servo.class, "intake2")};
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+        waitForStart();
         while (opModeIsActive())
         {
             drivemode(driver);
             double motors[] = setmovement(driver);
             //turning(motors[], driver, inverseControls);
             drive(motors);
-            actuator(driver);
-            intakeposition(operator, servos, intakeOut);
-            intake(operator, servos);
-            augur(operator, miscMotors);
+            //actuator(driver);
+            //intakeposition(operator, servos, intakeOut);
+            //intake(operator, servos);
+            //augur(operator, miscMotors);
 
         }
     }

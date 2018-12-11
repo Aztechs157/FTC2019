@@ -11,6 +11,7 @@ import com.sun.tools.javac.comp.Todo;
 @TeleOp
 public class opMode extends LinearOpMode
 {
+    //Initializes the variables
     private DcMotor driveMotors[] = {null, null, null, null};
     private DcMotor miscMotors[] = {null, null};
     private boolean inverseControls = false;
@@ -25,9 +26,12 @@ public class opMode extends LinearOpMode
 
     void drivemode(Gamepad input)
     {
+        //Sets the drive mode, determines which stick is used to drive.
         if (input.back)
         {
             inverseControls = !inverseControls;
+            telemetry.addData("InvertControls", inverseControls);
+            telemetry.update();
         }
     }
 
@@ -38,6 +42,7 @@ public class opMode extends LinearOpMode
 
     double[] setmovement(Gamepad input)
     {
+        //Sets the motor values for directional movement.
         double motors[] = {0, 0, 0, 0, 0};
         double x = input.right_stick_x;
         double y = input.right_stick_y;
@@ -78,7 +83,9 @@ public class opMode extends LinearOpMode
         return motors;
     }
 
-    double[] turning(double[] motors, Gamepad input1, boolean inverseControls) {
+    double[] turning(double[] motors, Gamepad input1, boolean inverseControls)
+    {
+        //Adjusts the motor values for turning.
         double x;
         double y;
         if (inverseControls) {
@@ -180,10 +187,20 @@ public class opMode extends LinearOpMode
 
     public void drive(double[] motors)
     {
+        //Sets the power of the motors based on the motor values
+        //Creates Telemetry data for the motors.
         driveMotors[0].setPower(motors[0]);
         driveMotors[1].setPower(motors[1]);
         driveMotors[2].setPower(motors[2]);
         driveMotors[3].setPower(motors[3]);
+        telemetry.addData("Motor0", motors[0]);
+        telemetry.update();
+        telemetry.addData("Motor1", motors[1]);
+        telemetry.update();
+        telemetry.addData("Motor2", motors[2]);
+        telemetry.update();
+        telemetry.addData("Motor3", motors[3]);
+        telemetry.update();
     }
 
     private double n(double x)
@@ -209,10 +226,13 @@ public class opMode extends LinearOpMode
 
     public void actuator(Gamepad input1)
     {
+        //Controls the position of the actuator, with telemetry.
         float target;
         if (input1.x)
         {
             actuator = !actuator;
+            telemetry.addData("actuator", actuator);
+            telemetry.update();
         }
         if (actuator)
         {
@@ -241,7 +261,7 @@ public class opMode extends LinearOpMode
         }
     }*/
 
-    public void augur(Gamepad input, DcMotor miscMotors[])
+    /*public void augur(Gamepad input, DcMotor miscMotors[])
     {
         if (input.left_trigger > 0 && input.b)
         {
@@ -251,17 +271,20 @@ public class opMode extends LinearOpMode
         {
             miscMotors[1].setPower(input.left_trigger);
         }
-    }
+    }*/
 
     public void intake(Gamepad input, DcMotor miscMotors[])
     {
+        //Controls the speed and direction of the intake.
         if (input.right_trigger > 0 && input.a)
         {
+            //reverse
             miscMotors[1].setPower(-input.right_trigger);
             miscMotors[2].setPower(input.right_trigger);
         }
         else if (input.right_trigger > 0)
         {
+            //forward
             miscMotors[1].setPower(input.right_trigger);
             miscMotors[2].setPower(-input.right_trigger);
         }
@@ -270,15 +293,19 @@ public class opMode extends LinearOpMode
     @Override
     public void runOpMode()
     {
+        //Defines the drive motors
         driveMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "drive1"),
                                     hardwareMap.get(DcMotor.class, "drive2"),
                                     hardwareMap.get(DcMotor.class, "drive3"),
                                     hardwareMap.get(DcMotor.class, "drive4")};
+        //defines the gamepads
         driver = this.gamepad1;
         operator = this.gamepad2;
         //TODO: make sure gamepads are assigned right
+        //Sets up a system to hold the actuator in a position.
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);
+        //Defines the servos in an array.
         servos = new Servo[]{hardwareMap.get(Servo.class, "intake1"),
                              hardwareMap.get(Servo.class, "intake2")};
         telemetry.addData("Status", "Initialized");
@@ -287,13 +314,14 @@ public class opMode extends LinearOpMode
 
         while (opModeIsActive())
         {
+            //Main code for the robot, the stuff that actually does stuff.
             drivemode(driver);
             double motors[] = setmovement(driver);
             telemetry.addData("value", driver.left_stick_x);
             telemetry.update();
             turning(motors, driver, inverseControls);
             drive(motors);
-            actuator(driver);
+            //actuator(driver);
             //intakeposition(operator, servos, intakeOut);
             intake(operator, miscMotors);
             //augur(operator, miscMotors);

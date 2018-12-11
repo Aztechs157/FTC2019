@@ -78,6 +78,106 @@ public class opMode extends LinearOpMode
         return motors;
     }
 
+    double[] turning(double[] motors, Gamepad input1, boolean inverseControls) {
+        double x;
+        double y;
+        if (inverseControls) {
+            x = input1.left_stick_x;
+            y = input1.left_stick_y;
+        } else {
+            x = input1.right_stick_x;
+            y = input1.right_stick_y;
+        }
+
+        double turningRate = input1.right_trigger - input1.left_trigger;
+        if (turningRate >= 0) {
+            if (-x >= abs(y)) {
+                motors[0] = motors[0] - 2 * (y - (-abs(x))) * turningRate + (1 + x) * turningRate;
+            } else if (y > abs(x)) {
+                motors[0] += (1 - y) * turningRate;
+            } else if (x >= abs(y)) {
+                motors[0] += (1 - x) * turningRate;
+            } else {
+                motors[0] += (1 + y) * turningRate;
+            }
+
+
+            if (abs(x) <= y) {
+                motors[1] = motors[1] + 2 * (y + abs(x)) * turningRate + (1 - y) * turningRate;
+            } else if (-y >= abs(x)) {
+                motors[0] += (1 + y) * turningRate;
+            } else if (x > abs(y)) {
+                motors[0] += (1 - x) * turningRate;
+            } else {
+                motors[0] += (1 + x) * turningRate;
+            }
+
+
+            if (x >= abs(y)) {
+                motors[2] = motors[2] + 2 * (abs(y) - x) * turningRate + (1 - x) * turningRate;
+            } else if (y > abs(x)) {
+                motors[2] += (1 - y) * turningRate;
+            } else if (-x >= abs(y)) {
+                motors[2] += (1 + x) * turningRate;
+            } else {
+                motors[3] += (1 - y) * turningRate;
+            }
+
+            if (abs(x) <= y) {
+                motors[3] = motors[3] - 2 * (y - abs(x)) * turningRate + (1 - y) * turningRate;
+            } else if (x > abs(y)) {
+                motors[3] += (1 - x) * turningRate;
+            } else if (-y >= abs(x)) {
+                motors[3] += (1 + y) * turningRate;
+            } else {
+                motors[3] += (1 + x) * turningRate;
+            }
+        } else {
+            if (-x >= abs(y)) {
+                motors[0] = motors[0] + 2 * (-abs(x) - x) * turningRate + (1 + x) * turningRate;
+            } else if (-y > abs(x)) {
+                motors[0] += (1 + y) * turningRate;
+            } else if (x >= abs(y)) {
+                motors[0] += (1 - x) * turningRate;
+            } else {
+                motors[0] += (1 - y) * turningRate;
+            }
+
+            if (y >= abs(x)) {
+                motors[1] = motors[1] - 2 * (-abs(y) + x) * turningRate + (1 - y) * turningRate;
+            } else if (x > abs(y)) {
+                motors[1] += (1 - x) * turningRate;
+            } else if (-y >= abs(x)) {
+                motors[1] += (1 + y) * turningRate;
+            } else {
+                motors[1] += (1 + x) * turningRate;
+            }
+
+            if (x >= abs(y)) {
+                motors[2] = motors[2] - 2 * (y - abs(x)) * turningRate + (1 - x) * turningRate;
+            } else if (y > abs(x)) {
+                motors[2] += (1 - y) * turningRate;
+            } else if (-x >= abs(y)) {
+                motors[2] += (1 + x) * turningRate;
+            } else {
+                motors[2] += (1 + x) * turningRate;
+            }
+
+            if (-x >= abs(y)) {
+                motors[3] = motors[3] - 2 * (-abs(y) - x) * turningRate + (1 + x) * turningRate;
+            } else if (-y > abs(x)) {
+                motors[3] += (1 + y) * turningRate;
+            } else if (x >= abs(y)) {
+                motors[3] += (1 - y) * turningRate;
+            } else {
+                motors[3] += (1 - x) * turningRate;
+            }
+        }
+
+        return motors;
+    }
+
+
     public void drive(double[] motors)
     {
         driveMotors[0].setPower(motors[0]);
@@ -91,7 +191,7 @@ public class opMode extends LinearOpMode
         return -abs(x);
     }
 
-    public void intakeposition(Gamepad input, Servo servos[], boolean intakeOut)
+    /*public void intakeposition(Gamepad input, Servo servos[], boolean intakeOut)
     {
         if (input.y && !intakeOut)
         {
@@ -105,7 +205,7 @@ public class opMode extends LinearOpMode
             servos[3].setPosition(0);
             intakeOut = false;
         }
-    }
+    }*/
 
     public void actuator(Gamepad input1)
     {
@@ -127,7 +227,7 @@ public class opMode extends LinearOpMode
         miscMotors[0].setPower(val);
     }
 
-    public void intake(Gamepad input, Servo servos[])
+    /*public void intake(Gamepad input, Servo servos[])
     {
         if (input.right_trigger > 0 && input.a)
         {
@@ -139,7 +239,7 @@ public class opMode extends LinearOpMode
             servos[0].setPosition(input.right_trigger);
             servos[1].setPosition(-input.right_trigger);
         }
-    }
+    }*/
 
     public void augur(Gamepad input, DcMotor miscMotors[])
     {
@@ -153,6 +253,20 @@ public class opMode extends LinearOpMode
         }
     }
 
+    public void intake(Gamepad input, DcMotor miscMotors[])
+    {
+        if (input.right_trigger > 0 && input.a)
+        {
+            miscMotors[1].setPower(-input.right_trigger);
+            miscMotors[2].setPower(input.right_trigger);
+        }
+        else if (input.right_trigger > 0)
+        {
+            miscMotors[1].setPower(input.right_trigger);
+            miscMotors[2].setPower(-input.right_trigger);
+        }
+    }
+
     @Override
     public void runOpMode()
     {
@@ -160,8 +274,8 @@ public class opMode extends LinearOpMode
                                     hardwareMap.get(DcMotor.class, "drive2"),
                                     hardwareMap.get(DcMotor.class, "drive3"),
                                     hardwareMap.get(DcMotor.class, "drive4")};
-        gamepad1 = new Gamepad();
-        gamepad2 = new Gamepad();
+        driver = this.gamepad1;
+        operator = this.gamepad2;
         //TODO: make sure gamepads are assigned right
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);
@@ -170,15 +284,18 @@ public class opMode extends LinearOpMode
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
+
         while (opModeIsActive())
         {
             drivemode(driver);
             double motors[] = setmovement(driver);
-            //turning(motors[], driver, inverseControls);
+            telemetry.addData("value", driver.left_stick_x);
+            telemetry.update();
+            turning(motors, driver, inverseControls);
             drive(motors);
-            //actuator(driver);
+            actuator(driver);
             //intakeposition(operator, servos, intakeOut);
-            //intake(operator, servos);
+            intake(operator, servos);
             //augur(operator, miscMotors);
 
         }

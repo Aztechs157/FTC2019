@@ -226,6 +226,8 @@ public class opMode extends LinearOpMode
 
     public void actuator(Gamepad input1)
     {
+        miscMotors[0].setPower(input1.right_stick_y);
+        /*
         //Controls the position of the actuator, with telemetry.
         float target;
         if (input1.x)
@@ -242,9 +244,8 @@ public class opMode extends LinearOpMode
         {
             target = 0;
         }
-        float val = (float) actuatorController.pidCalculate(target,
-                                                            miscMotors[0].getCurrentPosition());
-        miscMotors[0].setPower(val);
+        float val = (float) actuatorController.pidCalculate(target, miscMotors[0].getCurrentPosition());
+        miscMotors[0].setPower(val);*/
     }
 
     /*public void intake(Gamepad input, Servo servos[])
@@ -321,7 +322,7 @@ public class opMode extends LinearOpMode
             telemetry.update();
             turning(motors, driver, inverseControls);
             drive(motors);
-            //actuator(driver);
+            actuator(operator);
             //intakeposition(operator, servos, intakeOut);
             intake(operator, miscMotors);
             //augur(operator, miscMotors);

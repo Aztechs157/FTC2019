@@ -303,10 +303,8 @@ public class autoMode extends LinearOpMode
 
         ElapsedTime time = new ElapsedTime();
 
-        while (opModeIsActive())
-        {
             time.reset();
-            while (time.time(TimeUnit.SECONDS) < 9.5)
+            while (time.time(TimeUnit.SECONDS) < 8)
             {
                 miscMotors[0].setPower(-1);
             }
@@ -324,7 +322,7 @@ public class autoMode extends LinearOpMode
             drive(new double[]{0, 0, 0, 0});
 
 
-        }
+
     }
 }
 

@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.concurrent.TimeUnit;
+
 @Autonomous
 public class autoMode extends LinearOpMode
 {
@@ -40,17 +42,10 @@ public class autoMode extends LinearOpMode
         return Math.abs(x);
     }
 
-    double[] setmovement(Gamepad input)
+    double[] setmovement(double x, double y)
     {
         //Sets the motor values for directional movement.
         double motors[] = {0, 0, 0, 0, 0};
-        double x = input.right_stick_x;
-        double y = input.right_stick_y;
-        if (inverseControls)
-        {
-            x = input.left_stick_x;
-            y = input.left_stick_y;
-        }
         if (x >= 0 && y >= 0)
         {
             motors[0] = y - x;
@@ -311,10 +306,22 @@ public class autoMode extends LinearOpMode
         while (opModeIsActive())
         {
             time.reset();
-            while (time.time() < 9.5)
+            while (time.time(TimeUnit.SECONDS) < 9.5)
             {
                 miscMotors[0].setPower(-1);
             }
+            miscMotors[0].setPower(0);
+            time.reset();
+            while (time.time(TimeUnit.SECONDS)>0.5)
+            {
+                drive(setmovement(0, -1));
+            }
+            time.reset();
+            while (time.time(TimeUnit.SECONDS)<5)
+            {
+                drive(setmovement(1, 0));
+            }
+            drive(new double[]{0, 0, 0, 0});
 
 
         }

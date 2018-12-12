@@ -303,8 +303,6 @@ public class autoMode extends LinearOpMode
 
         ElapsedTime time = new ElapsedTime();
 
-        while (opModeIsActive())
-        {
             time.reset();
             while (time.time(TimeUnit.SECONDS) < 8)
             {
@@ -335,7 +333,7 @@ public class autoMode extends LinearOpMode
             }
 
 
-        }
+
     }
 }
 

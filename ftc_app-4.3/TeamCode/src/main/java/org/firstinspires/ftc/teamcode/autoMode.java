@@ -314,11 +314,13 @@ public class autoMode extends LinearOpMode
             time.reset();
             while (time.time(TimeUnit.SECONDS)>0.5)
             {
+                miscMotors[0].setPower(0);
                 drive(setmovement(0, -1));
             }
             time.reset();
             while (time.time(TimeUnit.SECONDS)<5)
             {
+                miscMotors[0].setPower(0);
                 drive(setmovement(1, 0));
             }
             drive(new double[]{0, 0, 0, 0});

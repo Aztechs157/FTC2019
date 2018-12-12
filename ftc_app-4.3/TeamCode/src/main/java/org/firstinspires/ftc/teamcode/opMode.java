@@ -193,14 +193,6 @@ public class opMode extends LinearOpMode
         driveMotors[1].setPower(motors[1]);
         driveMotors[2].setPower(motors[2]);
         driveMotors[3].setPower(motors[3]);
-        telemetry.addData("Motor0", motors[0]);
-        telemetry.update();
-        telemetry.addData("Motor1", motors[1]);
-        telemetry.update();
-        telemetry.addData("Motor2", motors[2]);
-        telemetry.update();
-        telemetry.addData("Motor3", motors[3]);
-        telemetry.update();
     }
 
     private double n(double x)
@@ -300,6 +292,7 @@ public class opMode extends LinearOpMode
                                     hardwareMap.get(DcMotor.class, "drive3"),
                                     hardwareMap.get(DcMotor.class, "drive4")};
         //defines the gamepads
+        miscMotors = new DcMotor[] {hardwareMap.get(DcMotor.class, "actuator")};
         driver = this.gamepad1;
         operator = this.gamepad2;
         //TODO: make sure gamepads are assigned right
@@ -318,13 +311,13 @@ public class opMode extends LinearOpMode
             //Main code for the robot, the stuff that actually does stuff.
             drivemode(driver);
             double motors[] = setmovement(driver);
-            telemetry.addData("value", driver.left_stick_x);
-            telemetry.update();
             turning(motors, driver, inverseControls);
             drive(motors);
+            telemetry.addData("value", operator.right_stick_y);
+            telemetry.update();
             actuator(operator);
             //intakeposition(operator, servos, intakeOut);
-            intake(operator, miscMotors);
+            //intake(operator, miscMotors);
             //augur(operator, miscMotors);
 
         }

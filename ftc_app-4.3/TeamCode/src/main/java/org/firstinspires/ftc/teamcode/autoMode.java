@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
 public class autoMode extends LinearOpMode
@@ -305,8 +306,15 @@ public class autoMode extends LinearOpMode
         telemetry.update();
         waitForStart();
 
+        ElapsedTime time = new ElapsedTime();
+
         while (opModeIsActive())
         {
+            time.reset();
+            while (time.time() < 9.5)
+            {
+                miscMotors[0].setPower(-1);
+            }
 
 
         }

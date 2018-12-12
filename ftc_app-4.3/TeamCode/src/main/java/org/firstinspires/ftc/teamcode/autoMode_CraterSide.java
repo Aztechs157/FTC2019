@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -11,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.concurrent.TimeUnit;
 
 @Autonomous
-public class autoMode extends LinearOpMode
+public class autoMode_CraterSide extends LinearOpMode
 {
     //Initializes the variables
     private DcMotor driveMotors[] = {null, null, null, null};
@@ -316,18 +315,29 @@ public class autoMode extends LinearOpMode
                 drive(setmovement(0, -1));
             }
             time.reset();
-            while (time.time(TimeUnit.MILLISECONDS) < 8750){
+            while (time.time(TimeUnit.SECONDS)<5)
+            {
+                //starts lowering actuator and moves robot toward crater
+                miscMotors[0].setPower(1);
+                drive(setmovement(1, 0));
+            }
+            drive(new double[]{0, 0, 0, 0});
+            time.reset();
+            while (time.time(TimeUnit.SECONDS) < 3)
+            {
+                //continues lowering actuator
                 miscMotors[0].setPower(1);
             }
             time.reset();
-            while (time.time(TimeUnit.MILLISECONDS) < 1500)
+            while (time.time(TimeUnit.SECONDS) < 2)
             {
+                //stops moving actuator motor
                 miscMotors[0].setPower(0);
-                drive(setmovement(1, 0));
             }
             time.reset();
             while(opModeIsActive())
             {
+                //moves robot toward
                 drive(setmovement(-1, 1));
             }
 

@@ -30,8 +30,6 @@ public class opMode extends LinearOpMode
         if (input.back)
         {
             inverseControls = !inverseControls;
-            telemetry.addData("InvertControls", inverseControls);
-            telemetry.update();
         }
     }
 
@@ -200,22 +198,6 @@ public class opMode extends LinearOpMode
         return -abs(x);
     }
 
-    /*public void intakeposition(Gamepad input, Servo servos[], boolean intakeOut)
-    {
-        if (input.y && !intakeOut)
-        {
-            servos[2].setPosition(90);
-            servos[3].setPosition(90);
-            intakeOut = true;
-        }
-        else if (input.y && intakeOut)
-        {
-            servos[2].setPosition(0);
-            servos[3].setPosition(0);
-            intakeOut = false;
-        }
-    }*/
-
     public void actuator(Gamepad input1)
     {
         miscMotors[0].setPower(input1.right_stick_y);
@@ -240,32 +222,6 @@ public class opMode extends LinearOpMode
         miscMotors[0].setPower(val);*/
     }
 
-    /*public void intake(Gamepad input, Servo servos[])
-    {
-        if (input.right_trigger > 0 && input.a)
-        {
-            servos[0].setPosition(-input.right_trigger);
-            servos[1].setPosition(input.right_trigger);
-        }
-        else if (input.right_trigger > 0)
-        {
-            servos[0].setPosition(input.right_trigger);
-            servos[1].setPosition(-input.right_trigger);
-        }
-    }*/
-
-    /*public void augur(Gamepad input, DcMotor miscMotors[])
-    {
-        if (input.left_trigger > 0 && input.b)
-        {
-            miscMotors[1].setPower(-input.left_trigger);
-        }
-        else if (input.left_trigger > 0)
-        {
-            miscMotors[1].setPower(input.left_trigger);
-        }
-    }*/
-
     public void intake(Gamepad input, DcMotor miscMotors[])
     {
         //Controls the speed and direction of the intake.
@@ -281,6 +237,21 @@ public class opMode extends LinearOpMode
             miscMotors[1].setPower(input.right_trigger);
             miscMotors[2].setPower(-input.right_trigger);
         }
+    }
+
+    public void telemetry(boolean inverseControls, boolean actuator, double motors[], Servo servos[])
+    {
+        telemetry.addLine("Booleans")
+            .addData("InvertControls", inverseControls)
+            .addData("Actuator", actuator);
+        telemetry.addLine("Motors")
+            .addData("Motor0", motors[0])
+            .addData("Motor1", motors[1])
+            .addData("Motor2", motors[2])
+            .addData("Motor3", motors[3]);
+        telemetry.addLine("Misc Functions")
+            .addData("Actuator Control", operator.right_stick_y);
+        telemetry.update();
     }
 
     @Override
@@ -313,9 +284,8 @@ public class opMode extends LinearOpMode
             double motors[] = setmovement(driver);
             turning(motors, driver, inverseControls);
             drive(motors);
-            telemetry.addData("value", operator.right_stick_y);
-            telemetry.update();
             actuator(operator);
+            telemetry(inverseControls, actuator, motors, servos);
             //intakeposition(operator, servos, intakeOut);
             //intake(operator, miscMotors);
             //augur(operator, miscMotors);

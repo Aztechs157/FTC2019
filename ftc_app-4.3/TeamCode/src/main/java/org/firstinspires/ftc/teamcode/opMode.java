@@ -86,95 +86,157 @@ public class opMode extends LinearOpMode
         //Adjusts the motor values for turning.
         double x;
         double y;
-        if (inverseControls) {
+        if (inverseControls)
+        {
             x = input1.left_stick_x;
             y = input1.left_stick_y;
-        } else {
+        }
+        else
+        {
             x = input1.right_stick_x;
             y = input1.right_stick_y;
         }
 
         double turningRate = input1.right_trigger - input1.left_trigger;
-        if (turningRate >= 0) {
-            if (-x >= abs(y)) {
+        if (turningRate >= 0)
+        {
+            if (-x >= abs(y))
+            {
                 motors[0] = motors[0] - 2 * (y - (-abs(x))) * turningRate + (1 + x) * turningRate;
-            } else if (y > abs(x)) {
+            }
+            else if (y > abs(x))
+            {
                 motors[0] += (1 - y) * turningRate;
-            } else if (x >= abs(y)) {
+            }
+            else if (x >= abs(y))
+            {
                 motors[0] += (1 - x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[0] += (1 + y) * turningRate;
             }
 
 
-            if (abs(x) <= y) {
+            if (abs(x) <= y)
+            {
                 motors[1] = motors[1] + 2 * (y + abs(x)) * turningRate + (1 - y) * turningRate;
-            } else if (-y >= abs(x)) {
+            }
+            else if (-y >= abs(x))
+            {
                 motors[0] += (1 + y) * turningRate;
-            } else if (x > abs(y)) {
+            }
+            else if (x > abs(y))
+            {
                 motors[0] += (1 - x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[0] += (1 + x) * turningRate;
             }
 
 
-            if (x >= abs(y)) {
+            if (x >= abs(y))
+            {
                 motors[2] = motors[2] + 2 * (abs(y) - x) * turningRate + (1 - x) * turningRate;
-            } else if (y > abs(x)) {
+            }
+            else if (y > abs(x))
+            {
                 motors[2] += (1 - y) * turningRate;
-            } else if (-x >= abs(y)) {
+            }
+            else if (-x >= abs(y))
+            {
                 motors[2] += (1 + x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[3] += (1 - y) * turningRate;
             }
 
-            if (abs(x) <= y) {
+            if (abs(x) <= y)
+            {
                 motors[3] = motors[3] - 2 * (y - abs(x)) * turningRate + (1 - y) * turningRate;
-            } else if (x > abs(y)) {
+            }
+            else if (x > abs(y))
+            {
                 motors[3] += (1 - x) * turningRate;
-            } else if (-y >= abs(x)) {
+            }
+            else if (-y >= abs(x))
+            {
                 motors[3] += (1 + y) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[3] += (1 + x) * turningRate;
             }
-        } else {
-            if (-x >= abs(y)) {
+        }
+        else
+        {
+            if (-x >= abs(y))
+            {
                 motors[0] = motors[0] + 2 * (-abs(x) - x) * turningRate + (1 + x) * turningRate;
-            } else if (-y > abs(x)) {
+            }
+            else if (-y > abs(x))
+            {
                 motors[0] += (1 + y) * turningRate;
-            } else if (x >= abs(y)) {
+            }
+            else if (x >= abs(y))
+            {
                 motors[0] += (1 - x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[0] += (1 - y) * turningRate;
             }
 
-            if (y >= abs(x)) {
+            if (y >= abs(x))
+            {
                 motors[1] = motors[1] - 2 * (-abs(y) + x) * turningRate + (1 - y) * turningRate;
-            } else if (x > abs(y)) {
+            }
+            else if (x > abs(y))
+            {
                 motors[1] += (1 - x) * turningRate;
-            } else if (-y >= abs(x)) {
+            }
+            else if (-y >= abs(x))
+            {
                 motors[1] += (1 + y) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[1] += (1 + x) * turningRate;
             }
 
-            if (x >= abs(y)) {
+            if (x >= abs(y))
+            {
                 motors[2] = motors[2] - 2 * (y - abs(x)) * turningRate + (1 - x) * turningRate;
-            } else if (y > abs(x)) {
+            }
+            else if (y > abs(x))
+            {
                 motors[2] += (1 - y) * turningRate;
-            } else if (-x >= abs(y)) {
+            }
+            else if (-x >= abs(y))
+            {
                 motors[2] += (1 + x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[2] += (1 + x) * turningRate;
             }
 
-            if (-x >= abs(y)) {
+            if (-x >= abs(y))
+            {
                 motors[3] = motors[3] - 2 * (-abs(y) - x) * turningRate + (1 + x) * turningRate;
-            } else if (-y > abs(x)) {
+            }
+            else if (-y > abs(x))
+            {
                 motors[3] += (1 + y) * turningRate;
-            } else if (x >= abs(y)) {
+            }
+            else if (x >= abs(y))
+            {
                 motors[3] += (1 - y) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[3] += (1 - x) * turningRate;
             }
         }
@@ -218,7 +280,8 @@ public class opMode extends LinearOpMode
         {
             target = 0;
         }
-        float val = (float) actuatorController.pidCalculate(target, miscMotors[0].getCurrentPosition());
+        float val = (float) actuatorController.pidCalculate(target, miscMotors[0]
+        .getCurrentPosition());
         miscMotors[0].setPower(val);*/
     }
 
@@ -239,18 +302,19 @@ public class opMode extends LinearOpMode
         }
     }
 
-    public void telemetry(boolean inverseControls, boolean actuator, double motors[], Servo servos[])
+    public void telemetry(boolean inverseControls, boolean actuator, double motors[],
+                          Servo servos[])
     {
         telemetry.addLine("Booleans")
-            .addData("InvertControls", inverseControls)
-            .addData("Actuator", actuator);
+                .addData("InvertControls", inverseControls)
+                .addData("Actuator", actuator);
         telemetry.addLine("Motors")
-            .addData("Motor0", motors[0])
-            .addData("Motor1", motors[1])
-            .addData("Motor2", motors[2])
-            .addData("Motor3", motors[3]);
+                .addData("Motor0", motors[0])
+                .addData("Motor1", motors[1])
+                .addData("Motor2", motors[2])
+                .addData("Motor3", motors[3]);
         telemetry.addLine("Misc Functions")
-            .addData("Actuator Control", operator.right_stick_y);
+                .addData("Actuator Control", operator.right_stick_y);
         telemetry.update();
     }
 
@@ -263,7 +327,7 @@ public class opMode extends LinearOpMode
                                     hardwareMap.get(DcMotor.class, "drive3"),
                                     hardwareMap.get(DcMotor.class, "drive4")};
         //defines the gamepads
-        miscMotors = new DcMotor[] {hardwareMap.get(DcMotor.class, "actuator")};
+        miscMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "actuator")};
         driver = this.gamepad1;
         operator = this.gamepad2;
         //TODO: make sure gamepads are assigned right

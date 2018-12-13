@@ -82,95 +82,157 @@ public class autoMode_CraterSideTwo extends LinearOpMode
         //Adjusts the motor values for turning.
         double x;
         double y;
-        if (inverseControls) {
+        if (inverseControls)
+        {
             x = input1.left_stick_x;
             y = input1.left_stick_y;
-        } else {
+        }
+        else
+        {
             x = input1.right_stick_x;
             y = input1.right_stick_y;
         }
 
         double turningRate = input1.right_trigger - input1.left_trigger;
-        if (turningRate >= 0) {
-            if (-x >= abs(y)) {
+        if (turningRate >= 0)
+        {
+            if (-x >= abs(y))
+            {
                 motors[0] = motors[0] - 2 * (y - (-abs(x))) * turningRate + (1 + x) * turningRate;
-            } else if (y > abs(x)) {
+            }
+            else if (y > abs(x))
+            {
                 motors[0] += (1 - y) * turningRate;
-            } else if (x >= abs(y)) {
+            }
+            else if (x >= abs(y))
+            {
                 motors[0] += (1 - x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[0] += (1 + y) * turningRate;
             }
 
 
-            if (abs(x) <= y) {
+            if (abs(x) <= y)
+            {
                 motors[1] = motors[1] + 2 * (y + abs(x)) * turningRate + (1 - y) * turningRate;
-            } else if (-y >= abs(x)) {
+            }
+            else if (-y >= abs(x))
+            {
                 motors[0] += (1 + y) * turningRate;
-            } else if (x > abs(y)) {
+            }
+            else if (x > abs(y))
+            {
                 motors[0] += (1 - x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[0] += (1 + x) * turningRate;
             }
 
 
-            if (x >= abs(y)) {
+            if (x >= abs(y))
+            {
                 motors[2] = motors[2] + 2 * (abs(y) - x) * turningRate + (1 - x) * turningRate;
-            } else if (y > abs(x)) {
+            }
+            else if (y > abs(x))
+            {
                 motors[2] += (1 - y) * turningRate;
-            } else if (-x >= abs(y)) {
+            }
+            else if (-x >= abs(y))
+            {
                 motors[2] += (1 + x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[3] += (1 - y) * turningRate;
             }
 
-            if (abs(x) <= y) {
+            if (abs(x) <= y)
+            {
                 motors[3] = motors[3] - 2 * (y - abs(x)) * turningRate + (1 - y) * turningRate;
-            } else if (x > abs(y)) {
+            }
+            else if (x > abs(y))
+            {
                 motors[3] += (1 - x) * turningRate;
-            } else if (-y >= abs(x)) {
+            }
+            else if (-y >= abs(x))
+            {
                 motors[3] += (1 + y) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[3] += (1 + x) * turningRate;
             }
-        } else {
-            if (-x >= abs(y)) {
+        }
+        else
+        {
+            if (-x >= abs(y))
+            {
                 motors[0] = motors[0] + 2 * (-abs(x) - x) * turningRate + (1 + x) * turningRate;
-            } else if (-y > abs(x)) {
+            }
+            else if (-y > abs(x))
+            {
                 motors[0] += (1 + y) * turningRate;
-            } else if (x >= abs(y)) {
+            }
+            else if (x >= abs(y))
+            {
                 motors[0] += (1 - x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[0] += (1 - y) * turningRate;
             }
 
-            if (y >= abs(x)) {
+            if (y >= abs(x))
+            {
                 motors[1] = motors[1] - 2 * (-abs(y) + x) * turningRate + (1 - y) * turningRate;
-            } else if (x > abs(y)) {
+            }
+            else if (x > abs(y))
+            {
                 motors[1] += (1 - x) * turningRate;
-            } else if (-y >= abs(x)) {
+            }
+            else if (-y >= abs(x))
+            {
                 motors[1] += (1 + y) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[1] += (1 + x) * turningRate;
             }
 
-            if (x >= abs(y)) {
+            if (x >= abs(y))
+            {
                 motors[2] = motors[2] - 2 * (y - abs(x)) * turningRate + (1 - x) * turningRate;
-            } else if (y > abs(x)) {
+            }
+            else if (y > abs(x))
+            {
                 motors[2] += (1 - y) * turningRate;
-            } else if (-x >= abs(y)) {
+            }
+            else if (-x >= abs(y))
+            {
                 motors[2] += (1 + x) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[2] += (1 + x) * turningRate;
             }
 
-            if (-x >= abs(y)) {
+            if (-x >= abs(y))
+            {
                 motors[3] = motors[3] - 2 * (-abs(y) - x) * turningRate + (1 + x) * turningRate;
-            } else if (-y > abs(x)) {
+            }
+            else if (-y > abs(x))
+            {
                 motors[3] += (1 + y) * turningRate;
-            } else if (x >= abs(y)) {
+            }
+            else if (x >= abs(y))
+            {
                 motors[3] += (1 - y) * turningRate;
-            } else {
+            }
+            else
+            {
                 motors[3] += (1 - x) * turningRate;
             }
         }
@@ -230,7 +292,8 @@ public class autoMode_CraterSideTwo extends LinearOpMode
         {
             target = 0;
         }
-        float val = (float) actuatorController.pidCalculate(target, miscMotors[0].getCurrentPosition());
+        float val = (float) actuatorController.pidCalculate(target, miscMotors[0]
+        .getCurrentPosition());
         miscMotors[0].setPower(val);*/
     }
 
@@ -278,12 +341,13 @@ public class autoMode_CraterSideTwo extends LinearOpMode
     }
 
     @Override
-    public void runOpMode() {
+    public void runOpMode()
+    {
         //Defines the drive motors
         driveMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "drive1"),
-                hardwareMap.get(DcMotor.class, "drive2"),
-                hardwareMap.get(DcMotor.class, "drive3"),
-                hardwareMap.get(DcMotor.class, "drive4")};
+                                    hardwareMap.get(DcMotor.class, "drive2"),
+                                    hardwareMap.get(DcMotor.class, "drive3"),
+                                    hardwareMap.get(DcMotor.class, "drive4")};
         //defines the gamepads
         miscMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "actuator")};
         driver = this.gamepad1;
@@ -291,10 +355,10 @@ public class autoMode_CraterSideTwo extends LinearOpMode
         //TODO: make sure gamepads are assigned right
         //Sets up a system to hold the actuator in a position.
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
-                99999, 999999, 9999999);
+                                     99999, 999999, 9999999);
         //Defines the servos in an array.
         servos = new Servo[]{hardwareMap.get(Servo.class, "intake1"),
-                hardwareMap.get(Servo.class, "intake2")};
+                             hardwareMap.get(Servo.class, "intake2")};
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
@@ -302,24 +366,33 @@ public class autoMode_CraterSideTwo extends LinearOpMode
         ElapsedTime time = new ElapsedTime();
 
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 8750) {
+        while (time.time(TimeUnit.MILLISECONDS) < 8750)
+        {
             miscMotors[0].setPower(-1);
         }
         miscMotors[0].setPower(0);
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) > 100) {
+        while (time.time(TimeUnit.MILLISECONDS) < 100)
+        {
             miscMotors[0].setPower(0);
             drive(setmovement(0, -1));
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 8750) {
+        while (time.time(TimeUnit.MILLISECONDS) < 2250)
+        {
             miscMotors[0].setPower(1);
-        }
-        time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 1500) {
-            miscMotors[0].setPower(0);
             drive(setmovement(1, 0));
         }
         time.reset();
+        while (time.time(TimeUnit.MILLISECONDS) < 6500)
+        {
+            miscMotors[0].setPower(1);
+            drive(setmovement(0, 0));
+        }
+        while (opModeIsActive())
+        {
+            miscMotors[0].setPower(0);
+            drive(setmovement(0, 0));
+        }
     }
 }

@@ -262,7 +262,7 @@ public class autoMode extends LinearOpMode
 
     public void actuator(Gamepad input1)
     {
-        miscMotors[0].setPower(input1.right_stick_y);
+        miscMotors[0].setPower(-input1.right_stick_y);
         /*
         //Controls the position of the actuator, with telemetry.
         float target;
@@ -282,7 +282,7 @@ public class autoMode extends LinearOpMode
         }
         float val = (float) actuatorController.pidCalculate(target, miscMotors[0]
         .getCurrentPosition());
-        miscMotors[0].setPower(val);*/
+        miscMotors[0].setPower(-val);*/
     }
 
     /*public void intake(Gamepad input, Servo servos[])
@@ -356,7 +356,7 @@ public class autoMode extends LinearOpMode
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 8650)
         {
-            miscMotors[0].setPower(-1);
+            miscMotors[0].setPower(1);
         }
         miscMotors[0].setPower(0);
         time.reset();
@@ -368,14 +368,14 @@ public class autoMode extends LinearOpMode
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 1300)
         {
-            miscMotors[0].setPower(1);
+            miscMotors[0].setPower(-1);
             drive(setmovement(1, -0.1));
         }
         drive(new double[]{0, 0, 0, 0});
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 7450)
         {
-            miscMotors[0].setPower(1);
+            miscMotors[0].setPower(-1);
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 130)

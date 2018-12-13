@@ -77,23 +77,10 @@ public class autoMode_CraterSide extends LinearOpMode
         return motors;
     }
 
-    double[] turning(double[] motors, Gamepad input1, boolean inverseControls)
+    double[] turning(double[] motors, double x, double y, double turningRate)
     {
         //Adjusts the motor values for turning.
-        double x;
-        double y;
-        if (inverseControls)
-        {
-            x = input1.left_stick_x;
-            y = input1.left_stick_y;
-        }
-        else
-        {
-            x = input1.right_stick_x;
-            y = input1.right_stick_y;
-        }
 
-        double turningRate = input1.right_trigger - input1.left_trigger;
         if (turningRate >= 0)
         {
             if (-x >= abs(y))
@@ -274,7 +261,7 @@ public class autoMode_CraterSide extends LinearOpMode
 
     public void actuator(Gamepad input1)
     {
-        miscMotors[0].setPower(input1.right_stick_y);
+        miscMotors[0].setPower(-input1.right_stick_y);
         /*
         //Controls the position of the actuator, with telemetry.
         float target;
@@ -294,7 +281,7 @@ public class autoMode_CraterSide extends LinearOpMode
         }
         float val = (float) actuatorController.pidCalculate(target, miscMotors[0]
         .getCurrentPosition());
-        miscMotors[0].setPower(val);*/
+        miscMotors[0].setPower(-val);*/
     }
 
     /*public void intake(Gamepad input, Servo servos[])
@@ -368,36 +355,42 @@ public class autoMode_CraterSide extends LinearOpMode
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 8750)
         {
-            miscMotors[0].setPower(-1);
+            miscMotors[0].setPower(1);
         }
         miscMotors[0].setPower(0);
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) > 100)
+        while (time.time(TimeUnit.MILLISECONDS) < 100)
         {
             miscMotors[0].setPower(0);
             drive(setmovement(0, -1));
         }
         time.reset();
-        while (time.time(TimeUnit.SECONDS) < 5)
+        while (time.time(TimeUnit.MILLISECONDS) < 500)
         {
             //starts lowering actuator and moves robot toward crater
-            miscMotors[0].setPower(1);
+            miscMotors[0].setPower(-1); //gets to 500/8750
             drive(setmovement(1, 0));
         }
         drive(new double[]{0, 0, 0, 0});
         time.reset();
-        while (time.time(TimeUnit.SECONDS) < 3)
+        while (time.time(TimeUnit.MILLISECONDS ) < 500)
         {
-            //continues lowering actuator
-            miscMotors[0].setPower(1);
+            miscMotors[0].setPower(-1); //gets to 1000/8750
+            drive(setmovement(0, -1));
         }
         time.reset();
-        while (time.time(TimeUnit.SECONDS) < 2)
+        while (time.time(TimeUnit.MILLISECONDS ) < 80)
         {
-            //stops moving actuator motor
-            miscMotors[0].setPower(0);
+            miscMotors[0].setPower(-1); //gets to 1080/8750
+            drive(turning(setmovement(0, 0), 0, 0, -1));
         }
-        time.reset();
+        while (time.time(TimeUnit.MILLISECONDS) < 500)
+        {
+
+            miscMotors[0].setPower(-1); //gets to 1000/8750
+            drive(setmovement(0, -1));
+
+        }
         while (opModeIsActive())
         {
             //moves robot toward

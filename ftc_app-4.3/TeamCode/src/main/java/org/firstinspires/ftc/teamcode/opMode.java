@@ -262,7 +262,7 @@ public class opMode extends LinearOpMode
 
     public void actuator(Gamepad input1)
     {
-        miscMotors[0].setPower(input1.right_stick_y);
+        miscMotors[0].setPower(-input1.right_stick_y);
         /*
         //Controls the position of the actuator, with telemetry.
         float target;
@@ -282,7 +282,7 @@ public class opMode extends LinearOpMode
         }
         float val = (float) actuatorController.pidCalculate(target, miscMotors[0]
         .getCurrentPosition());
-        miscMotors[0].setPower(val);*/
+        miscMotors[0].setPower(-val);*/
     }
 
     public void intake(Gamepad input, DcMotor miscMotors[])

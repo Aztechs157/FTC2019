@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.qualcomm.robotcore.hardware.Servo.Direction.REVERSE;
+
 @Autonomous
 public class autoMode extends LinearOpMode
 {
@@ -345,10 +347,13 @@ public class autoMode extends LinearOpMode
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);
         //Defines the servos in an array.
-        servos = new Servo[]{hardwareMap.get(Servo.class, "intake1"),
-                             hardwareMap.get(Servo.class, "intake2")};
+        servos = new Servo[]{hardwareMap.get(Servo.class, "marker1"),
+                             hardwareMap.get(Servo.class, "marker2")};
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        servos[0].setDirection(REVERSE);
+        servos[0].setPosition(.85);
+        servos[1].setPosition(.9);
         waitForStart();
 
         ElapsedTime time = new ElapsedTime();
@@ -376,6 +381,8 @@ public class autoMode extends LinearOpMode
         while (time.time(TimeUnit.MILLISECONDS) < 7450)
         {
             miscMotors[0].setPower(-1);
+            servos[0].setPosition(.17);
+            servos[1].setPosition(.15);
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 130)

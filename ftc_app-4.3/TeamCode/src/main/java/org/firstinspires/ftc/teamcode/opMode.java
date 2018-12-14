@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
 import com.sun.tools.javac.comp.Todo;
+import org.firstinspires.ftc.robotcore.external.android.AndroidOrientation;
+
+import static com.qualcomm.robotcore.hardware.Servo.Direction.REVERSE;
 
 @TeleOp
 public class opMode extends LinearOpMode
@@ -22,6 +25,8 @@ public class opMode extends LinearOpMode
     private PID actuatorController;
     private double motors[] = {0, 0, 0, 0, 0};
     private Servo servos[] = {null, null};
+    private AndroidOrientation orientation;
+    private boolean marker = true;
 
 
     void drivemode(Gamepad input)
@@ -42,12 +47,12 @@ public class opMode extends LinearOpMode
     {
         //Sets the motor values for directional movement.
         double motors[] = {0, 0, 0, 0, 0};
-        double x = input.right_stick_x;
-        double y = input.right_stick_y;
+        double x = input.right_stick_y;
+        double y = -input.right_stick_x;
         if (inverseControls)
         {
-            x = input.left_stick_x;
-            y = input.left_stick_y;
+            x = input.left_stick_y;
+            y = -input.left_stick_x;
         }
         if (x >= 0 && y >= 0)
         {
@@ -88,13 +93,13 @@ public class opMode extends LinearOpMode
         double y;
         if (inverseControls)
         {
-            x = input1.left_stick_x;
-            y = input1.left_stick_y;
+            x = input1.left_stick_y;
+            y = -input1.left_stick_x;
         }
         else
         {
-            x = input1.right_stick_x;
-            y = input1.right_stick_y;
+            x = input1.right_stick_y;
+            y = -input1.right_stick_x;
         }
 
         double turningRate = input1.right_trigger - input1.left_trigger;
@@ -302,9 +307,29 @@ public class opMode extends LinearOpMode
         }
     }
 
-    public void telemetry(boolean inverseControls, boolean actuator, double motors[],
-                          Servo servos[])
+    public void marker(Gamepad operator, boolean marker, Servo servos[])
     {
+        if (gamepad2.y)
+        {
+            marker = !marker;
+        }
+
+        if (marker)
+        {
+            servos[0].setPosition(.17);
+            servos[1].setPosition(.15);
+        }
+        else
+        {
+            servos[0].setPosition(.85);
+            servos[1].setPosition(.9);
+        }
+    }
+
+    public void telemetry(boolean inverseControls, boolean actuator, double motors[],
+                          Servo servos[], AndroidOrientation orientation)
+    {
+        orientation.startListening();
         telemetry.addLine("Booleans")
                 .addData("InvertControls", inverseControls)
                 .addData("Actuator", actuator);
@@ -314,7 +339,8 @@ public class opMode extends LinearOpMode
                 .addData("Motor2", motors[2])
                 .addData("Motor3", motors[3]);
         telemetry.addLine("Misc Functions")
-                .addData("Actuator Control", operator.right_stick_y);
+                .addData("Actuator Control", operator.right_stick_y)
+                .addData("Orientation", orientation.getAzimuth());
         telemetry.update();
     }
 
@@ -335,8 +361,10 @@ public class opMode extends LinearOpMode
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);
         //Defines the servos in an array.
-        servos = new Servo[]{hardwareMap.get(Servo.class, "intake1"),
-                             hardwareMap.get(Servo.class, "intake2")};
+        servos = new Servo[]{hardwareMap.get(Servo.class, "marker1"),
+                             hardwareMap.get(Servo.class, "marker2")};
+        orientation = new AndroidOrientation();
+        servos[0].setDirection(REVERSE);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
@@ -349,7 +377,8 @@ public class opMode extends LinearOpMode
             turning(motors, driver, inverseControls);
             drive(motors);
             actuator(operator);
-            telemetry(inverseControls, actuator, motors, servos);
+            marker(operator, marker, servos);
+            telemetry(inverseControls, actuator, motors, servos, orientation);
             //intakeposition(operator, servos, intakeOut);
             //intake(operator, miscMotors);
             //augur(operator, miscMotors);

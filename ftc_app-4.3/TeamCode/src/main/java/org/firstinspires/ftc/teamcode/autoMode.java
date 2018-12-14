@@ -378,17 +378,17 @@ public class autoMode extends LinearOpMode
         }
         drive(new double[]{0, 0, 0, 0});
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 7450)
+        while (time.time(TimeUnit.MILLISECONDS) < 130)
+        {
+            drive(turning(setmovement(0, 0), 0, 0, 1));
+            miscMotors[0].setPower(-1);
+        }
+        time.reset();
+        while (time.time(TimeUnit.MILLISECONDS) < 7320)
         {
             miscMotors[0].setPower(-1);
             servos[0].setPosition(.17);
             servos[1].setPosition(.15);
-        }
-        time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 130)
-        {
-            drive(turning(setmovement(0, 0), 0, 0, 1));
-            miscMotors[0].setPower(0);
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 2250)

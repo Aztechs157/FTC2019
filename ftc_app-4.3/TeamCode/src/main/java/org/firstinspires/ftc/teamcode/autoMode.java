@@ -32,7 +32,7 @@ public class autoMode extends LinearOpMode
     private Servo servos[] = {null, null};
 
     /**
-     * function that was coppied from telep, not entirely necessary here. it switches the drive
+     * function that was coppied from tele-op, not entirely necessary here. it switches the drive
      * mode.
      * @param input:the controller that is being used
      */
@@ -286,6 +286,7 @@ public class autoMode extends LinearOpMode
     {
         miscMotors[0].setPower(-input1.right_stick_y);
         /*
+        //TODO: Get functional encoder wire to allow this part of the code to work
         //Controls the position of the actuator, with telemetry.
         float target;
         if (input1.x)
@@ -307,32 +308,12 @@ public class autoMode extends LinearOpMode
         miscMotors[0].setPower(-val);*/
     }
 
-    /*public void intake(Gamepad input, Servo servos[])
-    {
-        if (input.right_trigger > 0 && input.a)
-        {
-            servos[0].setPosition(-input.right_trigger);
-            servos[1].setPosition(input.right_trigger);
-        }
-        else if (input.right_trigger > 0)
-        {
-            servos[0].setPosition(input.right_trigger);
-            servos[1].setPosition(-input.right_trigger);
-        }
-    }*/
-
-    /*public void augur(Gamepad input, DcMotor miscMotors[])
-    {
-        if (input.left_trigger > 0 && input.b)
-        {
-            miscMotors[1].setPower(-input.left_trigger);
-        }
-        else if (input.left_trigger > 0)
-        {
-            miscMotors[1].setPower(input.left_trigger);
-        }
-    }*/
-
+    /**
+     * Used to control the Intake.
+     * This has not been tested as the intake doesn't work mechanically.
+     * @param input
+     * @param miscMotors
+     */
     public void intake(Gamepad input, DcMotor miscMotors[])
     {
         //Controls the speed and direction of the intake.
@@ -362,7 +343,6 @@ public class autoMode extends LinearOpMode
         miscMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "actuator")};
         driver = this.gamepad1;
         operator = this.gamepad2;
-        //TODO: make sure gamepads are assigned right
         //Sets up a system to hold the actuator in a position.
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);

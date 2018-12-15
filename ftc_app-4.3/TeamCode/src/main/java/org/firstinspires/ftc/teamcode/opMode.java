@@ -4,7 +4,7 @@
  * weeks. It was written in the Java programming language. We used Github for version control and
  * collaboration. We wrote the design for the code in Notepad++.
  *  We still have plenty of room to improve the code, for both functionality and elegance. We can
- * expand commenting in order to improve the readabiltity of the code. We can also add more
+ * expand commenting in order to improve the readability of the code. We can also add more
  * functionality to the telemetry section in order to make it more useful.
  */
 

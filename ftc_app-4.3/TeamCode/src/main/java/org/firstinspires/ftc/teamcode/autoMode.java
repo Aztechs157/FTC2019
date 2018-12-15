@@ -59,10 +59,12 @@ public class autoMode extends LinearOpMode
     }
 
     /**
-     * takes in a controller input, and converts it to the 
-     * @param x
-     * @param y
-     * @return
+     * takes in a controller input, and converts it to the direction of the robot, and the motor
+     * values to move the robot in that directon. it does this through a complicated piecewise
+     * function.
+     * @param x how fast to move forward
+     * @param y how fast to move right
+     * @return an array containing the motor values
      */
     double[] setmovement(double x, double y)
     {
@@ -100,6 +102,14 @@ public class autoMode extends LinearOpMode
         return motors;
     }
 
+    /**
+     * modifies motor values to add turns
+     * @param motors the values to modify
+     * @param x the amount to move forward
+     * @param y the amount to move right
+     * @param turningRate the amount to turn
+     * @return the new motor values
+     */
     double[] turning(double[] motors, double x, double y, double turningRate)
     {
         //Adjusts the motor values for turning.
@@ -250,7 +260,10 @@ public class autoMode extends LinearOpMode
         return motors;
     }
 
-
+    /**
+     * applies the motor values to the drivetrain
+     * @param motors the motor values to apply
+     */
     public void drive(double[] motors)
     {
         //Sets the power of the motors based on the motor values
@@ -261,6 +274,11 @@ public class autoMode extends LinearOpMode
         driveMotors[3].setPower(motors[3]);
     }
 
+    /**
+     * gets the negative absolute value of the function
+     * @param x the number to do the math on
+     * @return the result
+     */
     private double n(double x)
     {
         return -abs(x);
@@ -282,6 +300,10 @@ public class autoMode extends LinearOpMode
         }
     }*/
 
+    /**
+     * function to control the actuator in teleop, unused
+     * @param input1 the controller to use
+     */
     public void actuator(Gamepad input1)
     {
         miscMotors[0].setPower(-input1.right_stick_y);
@@ -333,6 +355,11 @@ public class autoMode extends LinearOpMode
         }
     }*/
 
+    /**
+     * teleop code, unused, controls the intake that doesn't exist
+     * @param input the controller that's used
+     * @param miscMotors the motors that have the intake
+     */
     public void intake(Gamepad input, DcMotor miscMotors[])
     {
         //Controls the speed and direction of the intake.
@@ -360,9 +387,9 @@ public class autoMode extends LinearOpMode
                                     hardwareMap.get(DcMotor.class, "drive4")};
         //defines the gamepads
         miscMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "actuator")};
+        //sets up the gamepads
         driver = this.gamepad1;
         operator = this.gamepad2;
-        //TODO: make sure gamepads are assigned right
         //Sets up a system to hold the actuator in a position.
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);
@@ -371,62 +398,63 @@ public class autoMode extends LinearOpMode
                              hardwareMap.get(Servo.class, "marker2")};
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        //starts the servo to hold on
         servos[0].setDirection(REVERSE);
         servos[0].setPosition(.85);
         servos[1].setPosition(.9);
         waitForStart();
-
+        //starts a timer
         ElapsedTime time = new ElapsedTime();
 
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 8650)
         {
-            miscMotors[0].setPower(1);
+            miscMotors[0].setPower(1); //lands
         }
         miscMotors[0].setPower(0);
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 100)
         {
             miscMotors[0].setPower(0);
-            drive(setmovement(0, -1));
+            drive(setmovement(0, -1)); //unhooks
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 1300)
         {
             miscMotors[0].setPower(-1);
-            drive(setmovement(1, -0.1));
+            drive(setmovement(1, -0.1)); //drives to the depot
         }
         drive(new double[]{0, 0, 0, 0});
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 130)
         {
             drive(turning(setmovement(0, 0), 0, 0, 1));
-            miscMotors[0].setPower(-1);
+            miscMotors[0].setPower(-1); //turns
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 7320)
         {
-            miscMotors[0].setPower(-1);
+            miscMotors[0].setPower(-1); //opens the marker holder
             servos[0].setPosition(.17);
-            servos[1].setPosition(.15);
+            servos[1].setPosition(.15); //lowers the climber
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 2250)
         {
             miscMotors[0].setPower(0);
-            drive(setmovement(0, 1));
+            drive(setmovement(0, 1)); //drives to the crater
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 100)
         {
-            drive(turning(setmovement(0, 0), 0, 0, -1));
+            drive(turning(setmovement(0, 0), 0, 0, -1)); //turns to go into the crater
             miscMotors[0].setPower(0);
         }
         time.reset();
         while (time.time(TimeUnit.MILLISECONDS) < 1000)
         {
             miscMotors[0].setPower(0);
-            drive(setmovement(0, 1));
+            drive(setmovement(0, 1)); //enters the crater
         }
 
 

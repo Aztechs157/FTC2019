@@ -1,3 +1,14 @@
+/**
+ *  This is the Tele-Op code for the 2018-2019 ftc robot for team 12566. This code was a joint effort
+ * between team members Jeremy Patrick and Tyler Silva. This code was written over the course a few
+ * weeks. It was written in the Java programming language. We used Github for version control and
+ * collaboration. We wrote the design for the code in Notepad++.
+ *  We still have plenty of room to improve the code, for both functionality and elegance. We can
+ * expand commenting in order to improve the readabiltity of the code. We can also add more
+ * functionality to the telemetry section in order to make it more useful.
+ */
+
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -253,7 +264,6 @@ public class opMode extends LinearOpMode
     public void drive(double[] motors)
     {
         //Sets the power of the motors based on the motor values
-        //Creates Telemetry data for the motors.
         driveMotors[0].setPower(motors[0]);
         driveMotors[1].setPower(motors[1]);
         driveMotors[2].setPower(motors[2]);
@@ -269,6 +279,7 @@ public class opMode extends LinearOpMode
     {
         miscMotors[0].setPower(-input1.right_stick_y);
         /*
+        //TODO: Get functional encoder wire to allow this part of the code to work
         //Controls the position of the actuator, with telemetry.
         float target;
         if (input1.x)
@@ -309,6 +320,7 @@ public class opMode extends LinearOpMode
 
     public void marker(Gamepad operator, boolean marker, Servo servos[])
     {
+        //Controls the holder for the marker, used for testing.
         if (gamepad2.y)
         {
             marker = !marker;
@@ -329,6 +341,7 @@ public class opMode extends LinearOpMode
     public void telemetry(boolean inverseControls, boolean actuator, double motors[],
                           Servo servos[], AndroidOrientation orientation)
     {
+        //Creates and Displays Telemetry data for various functions on the Robot
         orientation.startListening();
         telemetry.addLine("Booleans")
                 .addData("InvertControls", inverseControls)
@@ -356,7 +369,6 @@ public class opMode extends LinearOpMode
         miscMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "actuator")};
         driver = this.gamepad1;
         operator = this.gamepad2;
-        //TODO: make sure gamepads are assigned right
         //Sets up a system to hold the actuator in a position.
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);
@@ -379,10 +391,6 @@ public class opMode extends LinearOpMode
             actuator(operator);
             marker(operator, marker, servos);
             telemetry(inverseControls, actuator, motors, servos, orientation);
-            //intakeposition(operator, servos, intakeOut);
-            //intake(operator, miscMotors);
-            //augur(operator, miscMotors);
-
         }
     }
 }

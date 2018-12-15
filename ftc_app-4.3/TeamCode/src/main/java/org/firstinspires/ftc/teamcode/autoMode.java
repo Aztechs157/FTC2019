@@ -12,6 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 import static com.qualcomm.robotcore.hardware.Servo.Direction.REVERSE;
 
+/**
+ * this is the first autonomous written for the 2018-2019 robot. this autonomous route is currently
+ * untested, which will be fixed shortly. it lands, claims the depot, then goes into the crater.
+ */
 @Autonomous
 public class autoMode extends LinearOpMode
 {
@@ -27,7 +31,11 @@ public class autoMode extends LinearOpMode
     private double motors[] = {0, 0, 0, 0, 0};
     private Servo servos[] = {null, null};
 
-
+    /**
+     * function that was coppied from telep, not entirely necessary here. it switches the drive
+     * mode.
+     * @param input:the controller that is being used
+     */
     void drivemode(Gamepad input)
     {
         //Sets the drive mode, determines which stick is used to drive.
@@ -39,11 +47,23 @@ public class autoMode extends LinearOpMode
         }
     }
 
+    /**
+     * simply gets the absolute value of a number, is made so i don't have to write Math.abs every
+     * time
+     * @param x: the value to find the absolute value of
+     * @return: the absolute value of x
+     */
     private double abs(double x)
     {
         return Math.abs(x);
     }
 
+    /**
+     * takes in a controller input, and converts it to the 
+     * @param x
+     * @param y
+     * @return
+     */
     double[] setmovement(double x, double y)
     {
         //Sets the motor values for directional movement.

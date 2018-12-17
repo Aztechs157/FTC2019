@@ -27,7 +27,7 @@ public class opMode extends LinearOpMode
 {
     //Initializes the variables
     private DcMotor driveMotors[] = {null, null, null, null};
-    private DcMotor miscMotors[] = {null, null};
+    private DcMotor miscMotors[] = {null, null, null};
     private boolean inverseControls = false;
     private boolean intakeOut = false;
     private Gamepad driver = null;
@@ -304,17 +304,17 @@ public class opMode extends LinearOpMode
     public void intake(Gamepad input, DcMotor miscMotors[])
     {
         //Controls the speed and direction of the intake.
-        if (input.right_trigger > 0 && input.a)
+        if (input.left_trigger > 0)
         {
             //reverse
-            miscMotors[1].setPower(-input.right_trigger);
-            miscMotors[2].setPower(input.right_trigger);
+            miscMotors[1].setPower(-input.left_trigger / 2);
+            miscMotors[2].setPower(input.left_trigger / 2);
         }
         else if (input.right_trigger > 0)
         {
             //forward
-            miscMotors[1].setPower(input.right_trigger);
-            miscMotors[2].setPower(-input.right_trigger);
+            miscMotors[1].setPower(input.right_trigger / 2);
+            miscMotors[2].setPower(-input.right_trigger / 2);
         }
     }
 
@@ -351,6 +351,7 @@ public class opMode extends LinearOpMode
                 .addData("Motor1", motors[1])
                 .addData("Motor2", motors[2])
                 .addData("Motor3", motors[3]);
+                //.addData("Intake1", motors[]);
         telemetry.addLine("Misc Functions")
                 .addData("Actuator Control", operator.right_stick_y)
                 .addData("Orientation", orientation.getAzimuth());
@@ -366,7 +367,9 @@ public class opMode extends LinearOpMode
                                     hardwareMap.get(DcMotor.class, "drive3"),
                                     hardwareMap.get(DcMotor.class, "drive4")};
         //defines the gamepads
-        miscMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "actuator")};
+        miscMotors = new DcMotor[]{hardwareMap.get(DcMotor.class, "actuator"),
+                                   hardwareMap.get(DcMotor.class, "intake1"),
+                                   hardwareMap.get(DcMotor.class, "intake2")};
         driver = this.gamepad1;
         operator = this.gamepad2;
         //Sets up a system to hold the actuator in a position.
@@ -390,6 +393,7 @@ public class opMode extends LinearOpMode
             drive(motors);
             actuator(operator);
             marker(operator, marker, servos);
+            intake(operator, miscMotors);
             telemetry(inverseControls, actuator, motors, servos, orientation);
         }
     }

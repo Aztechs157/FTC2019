@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.qualcomm.robotcore.hardware.Servo.Direction.REVERSE;
+
 @Autonomous
 public class autoMode_CraterSide extends LinearOpMode
 {
@@ -313,11 +315,11 @@ public class autoMode_CraterSide extends LinearOpMode
     public void intake(Gamepad input, DcMotor miscMotors[])
     {
         //Controls the speed and direction of the intake.
-        if (input.right_trigger > 0 && input.a)
+        if (input.left_trigger > 0)
         {
             //reverse
-            miscMotors[1].setPower(-input.right_trigger);
-            miscMotors[2].setPower(input.right_trigger);
+            miscMotors[1].setPower(-input.left_trigger);
+            miscMotors[2].setPower(input.left_trigger);
         }
         else if (input.right_trigger > 0)
         {
@@ -344,8 +346,11 @@ public class autoMode_CraterSide extends LinearOpMode
         actuatorController = new PID(0.01, 0, 0.00000, 999999,
                                      99999, 999999, 9999999);
         //Defines the servos in an array.
-        servos = new Servo[]{hardwareMap.get(Servo.class, "intake1"),
-                             hardwareMap.get(Servo.class, "intake2")};
+        servos = new Servo[]{hardwareMap.get(Servo.class, "marker1"),
+                             hardwareMap.get(Servo.class, "marker2")};
+        servos[0].setDirection(REVERSE);
+        servos[0].setPosition(.85);
+        servos[1].setPosition(.9);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
@@ -373,28 +378,41 @@ public class autoMode_CraterSide extends LinearOpMode
         }
         drive(new double[]{0, 0, 0, 0});
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS ) < 500)
+        while (time.time(TimeUnit.MILLISECONDS)<0)
         {
-            miscMotors[0].setPower(-1); //gets to 1000/8750
+            drive(turning(setmovement(0, 0), 0, 0, -1));
+            miscMotors[0].setPower(0);
+        }
+        time.reset();
+        while (time.time(TimeUnit.MILLISECONDS ) < 1150)
+        {
+            //miscMotors[0].setPower(-1); //gets to 1000/8750
             drive(setmovement(0, -1));
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS ) < 80)
+        while (time.time(TimeUnit.MILLISECONDS ) < 320)
         {
-            miscMotors[0].setPower(-1); //gets to 1080/8750
+            //miscMotors[0].setPower(-1); //gets to 1080/8750
             drive(turning(setmovement(0, 0), 0, 0, -1));
         }
-        while (time.time(TimeUnit.MILLISECONDS) < 500)
+        time.reset();
+        while (time.time(TimeUnit.MILLISECONDS) < 1250)
         {
 
-            miscMotors[0].setPower(-1); //gets to 1000/8750
-            drive(setmovement(0, -1));
+            //miscMotors[0].setPower(-1); //gets to 1000/8750
+            drive(setmovement(.2, -1));
 
+        }
+        time.reset();
+        while (time.time(TimeUnit.MILLISECONDS) < 100)
+        {
+            servos[0].setPosition(.17);
+            servos[1].setPosition(.15);
         }
         while (opModeIsActive())
         {
             //moves robot toward
-            drive(setmovement(-1, 1));
+            drive(setmovement(0, 1));
         }
 
 

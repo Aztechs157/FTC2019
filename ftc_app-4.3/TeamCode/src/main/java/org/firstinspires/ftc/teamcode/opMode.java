@@ -54,17 +54,21 @@ public class opMode extends LinearOpMode
         return Math.abs(x);
     }
 
-    double[] setmovement(Gamepad input)
+    private double[] orient(Gamepad input)
+    {
+        double angle = Math.atan2(input.right_stick_x, input.right_stick_y);
+        angle = -angle+orientation.getPitch();
+        double magnitude = Math.sqrt(Math.pow(input.right_stick_x, 2)+Math.pow(input.right_stick_y, 2));
+        double x = magnitude*Math.cos(angle);
+        double y = magnitude*Math.sin(angle);
+        return new double[] {x, y};
+
+    }
+
+    double[] setmovement(double x, double y)
     {
         //Sets the motor values for directional movement.
         double motors[] = {0, 0, 0, 0, 0};
-        double x = input.right_stick_y;
-        double y = -input.right_stick_x;
-        if (inverseControls)
-        {
-            x = input.left_stick_y;
-            y = -input.left_stick_x;
-        }
         if (x >= 0 && y >= 0)
         {
             motors[0] = y - x;
@@ -97,23 +101,18 @@ public class opMode extends LinearOpMode
         return motors;
     }
 
-    double[] turning(double[] motors, Gamepad input1, boolean inverseControls)
+    /**
+     * modifies motor values to add turns
+     * @param motors the values to modify
+     * @param x the amount to move forward
+     * @param y the amount to move right
+     * @param turningRate the amount to turn
+     * @return the new motor values
+     */
+    double[] turning(double[] motors, double x, double y, double turningRate)
     {
         //Adjusts the motor values for turning.
-        double x;
-        double y;
-        if (inverseControls)
-        {
-            x = input1.left_stick_y;
-            y = -input1.left_stick_x;
-        }
-        else
-        {
-            x = input1.right_stick_y;
-            y = -input1.right_stick_x;
-        }
 
-        double turningRate = input1.right_trigger - input1.left_trigger;
         if (turningRate >= 0)
         {
             if (-x >= abs(y))
@@ -353,7 +352,7 @@ public class opMode extends LinearOpMode
                 .addData("Motor3", motors[3]);
         telemetry.addLine("Misc Functions")
                 .addData("Actuator Control", operator.right_stick_y)
-                .addData("Orientation", orientation.getAzimuth());
+                .addData("Orientation", orientation.getPitch());
         telemetry.update();
     }
 
@@ -385,8 +384,10 @@ public class opMode extends LinearOpMode
         {
             //Main code for the robot, the stuff that actually does stuff.
             drivemode(driver);
-            double motors[] = setmovement(driver);
-            turning(motors, driver, inverseControls);
+            double[] direction = orient(driver);
+            double motors[] = setmovement(direction[0], direction[1]);
+            double turn = driver.right_trigger-driver.left_trigger;
+            turning(motors, direction[0], direction[1], turn);
             drive(motors);
             actuator(operator);
             marker(operator, marker, servos);

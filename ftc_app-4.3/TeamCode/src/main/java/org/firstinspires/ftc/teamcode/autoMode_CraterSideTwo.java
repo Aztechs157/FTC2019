@@ -378,13 +378,13 @@ public class autoMode_CraterSideTwo extends LinearOpMode
             drive(setmovement(0, -1));
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 2250)
+        while (time.time(TimeUnit.MILLISECONDS) < 5000)
         {
             miscMotors[0].setPower(-1);
             drive(setmovement(1, 0));
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 6500)
+        while (time.time(TimeUnit.MILLISECONDS) < 3750)
         {
             miscMotors[0].setPower(-1);
             drive(setmovement(0, 0));

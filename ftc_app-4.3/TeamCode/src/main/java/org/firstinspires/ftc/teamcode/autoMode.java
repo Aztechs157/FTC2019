@@ -32,7 +32,7 @@ public class autoMode extends LinearOpMode
     private Servo servos[] = {null, null};
 
     /**
-     * function that was coppied from telep, not entirely necessary here. it switches the drive
+     * function that was coppied from tele-op, not entirely necessary here. it switches the drive
      * mode.
      * @param input:the controller that is being used
      */
@@ -308,6 +308,7 @@ public class autoMode extends LinearOpMode
     {
         miscMotors[0].setPower(-input1.right_stick_y);
         /*
+        //TODO: Get functional encoder wire to allow this part of the code to work
         //Controls the position of the actuator, with telemetry.
         float target;
         if (input1.x)
@@ -432,9 +433,10 @@ public class autoMode extends LinearOpMode
             miscMotors[0].setPower(-1); //turns
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 7320)
+        while (time.time(TimeUnit.MILLISECONDS) < 500)
         {
             miscMotors[0].setPower(-1); //opens the marker holder
+            drive(setmovement(0, 0));
             servos[0].setPosition(.17);
             servos[1].setPosition(.15); //lowers the climber
         }

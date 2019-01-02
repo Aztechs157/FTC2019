@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -403,6 +404,7 @@ public class autoMode extends LinearOpMode
         servos[0].setDirection(REVERSE);
         servos[0].setPosition(.85);
         servos[1].setPosition(.9);
+
         waitForStart();
         //starts a timer
         ElapsedTime time = new ElapsedTime();

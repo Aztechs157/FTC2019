@@ -25,7 +25,7 @@ public class AnalogGyro {
         double newAngle = this.gyro.getVoltage();
         newAngle = (normal-newAngle)/rate;
         this.test = newAngle;
-        newAngle = newAngle/((double)time.time(TimeUnit.MILLISECONDS)/1000);
+        newAngle = newAngle*((double)time.time(TimeUnit.MILLISECONDS)/1000);
         time.reset();
         angle += newAngle;
     }

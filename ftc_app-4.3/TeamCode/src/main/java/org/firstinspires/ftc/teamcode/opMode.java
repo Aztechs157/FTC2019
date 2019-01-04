@@ -13,6 +13,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,6 +29,7 @@ public class opMode extends LinearOpMode
     //Initializes the variables
     private DcMotor driveMotors[] = {null, null, null, null};
     private DcMotor miscMotors[] = {null, null, null};
+
     private boolean inverseControls = false;
     private boolean intakeOut = false;
     private Gamepad driver = null;
@@ -36,7 +38,7 @@ public class opMode extends LinearOpMode
     private PID actuatorController;
     private double motors[] = {0, 0, 0, 0, 0};
     private Servo servos[] = {null, null};
-    private AndroidOrientation orientation;
+    private AnalogGyro orientation;
     private boolean marker = true;
 
 
@@ -57,7 +59,7 @@ public class opMode extends LinearOpMode
     private double[] orient(Gamepad input)
     {
         double angle = Math.atan2(input.right_stick_x, input.right_stick_y);
-        angle = -angle+orientation.getPitch();
+        angle = -angle+orientation.angle;
         double magnitude = Math.sqrt(Math.pow(input.right_stick_x, 2)+Math.pow(input.right_stick_y, 2));
         double x = magnitude*Math.cos(angle);
         double y = magnitude*Math.sin(angle);
@@ -338,10 +340,10 @@ public class opMode extends LinearOpMode
     }
 
     public void telemetry(boolean inverseControls, boolean actuator, double motors[],
-                          Servo servos[], AndroidOrientation orientation)
+                          Servo servos[], AnalogGyro orientation)
     {
         //Creates and Displays Telemetry data for various functions on the Robot
-        orientation.startListening();
+
         telemetry.addLine("Booleans")
                 .addData("InvertControls", inverseControls)
                 .addData("Actuator", actuator);
@@ -353,7 +355,7 @@ public class opMode extends LinearOpMode
                 //.addData("Intake1", motors[]);
         telemetry.addLine("Misc Functions")
                 .addData("Actuator Control", operator.right_stick_y)
-                .addData("Orientation", orientation.getPitch());
+                .addData("Orientation", orientation.angle);
         telemetry.update();
     }
 
@@ -377,15 +379,16 @@ public class opMode extends LinearOpMode
         //Defines the servos in an array.
         servos = new Servo[]{hardwareMap.get(Servo.class, "marker1"),
                              hardwareMap.get(Servo.class, "marker2")};
-        orientation = new AndroidOrientation();
+        orientation = new AnalogGyro(hardwareMap.get(AnalogInput.class, "gyro"));
         servos[0].setDirection(REVERSE);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
-
+        orientation.start();
         while (opModeIsActive())
         {
             //Main code for the robot, the stuff that actually does stuff.
+            orientation.update();
             drivemode(driver);
             double[] direction = orient(driver);
             double motors[] = setmovement(direction[0], direction[1]);

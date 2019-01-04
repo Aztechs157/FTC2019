@@ -7,10 +7,11 @@ import java.util.concurrent.TimeUnit;
 
 public class AnalogGyro {
     double angle = 0;
-    double normal = 400;
-    double rate = 0.00462;
+    double normal = 2.26;
+    double rate = 0.002;
     AnalogInput gyro;
     ElapsedTime time;
+    double test;
     public AnalogGyro(AnalogInput gyro) {
         this.gyro = gyro;
     }
@@ -23,7 +24,8 @@ public class AnalogGyro {
     {
         double newAngle = this.gyro.getVoltage();
         newAngle = (normal-newAngle)/rate;
-        newAngle /= time.time(TimeUnit.SECONDS); //TODO: seconds is int, not double
+        this.test = newAngle;
+        newAngle = newAngle/((double)time.time(TimeUnit.MILLISECONDS)/1000);
         time.reset();
         angle += newAngle;
     }

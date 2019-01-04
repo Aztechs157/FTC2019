@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 @TeleOp
 public class calibrateGyro  extends LinearOpMode {
-    private double sum(ArrayList<Double> ar)
+    private double sum(List<Double> ar)
     {
         double count = 0;
         for (int i = 0; i < ar.size(); i++)
@@ -20,15 +20,19 @@ public class calibrateGyro  extends LinearOpMode {
     }
     public void runOpMode()
     {
-        AnalogInput gyro = hardwareMap.get(AnalogInput.class, "gyro");
+        AnalogGyro gyro = new AnalogGyro(hardwareMap.get(AnalogInput.class, "gyro"));
         ElapsedTime time = new ElapsedTime();
         waitForStart();
         List<Double> values= new ArrayList<Double>();
         time.reset();
+        gyro.start();
         while (opModeIsActive())
         {
-            values.add(gyro.getVoltage());
-            telemetry.addData("average", sum(values)/(double)values.size());
+            //values.add(gyro.getVoltage());
+            gyro.update();
+            telemetry.addLine("gyro").addData("angle", gyro.angle
+            ).addData("test", gyro.test).addData("value", gyro.gyro.getVoltage());
+            telemetry.update();
 
         }
 

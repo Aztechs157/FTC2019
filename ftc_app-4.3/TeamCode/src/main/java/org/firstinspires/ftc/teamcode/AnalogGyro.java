@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AnalogGyro {
     double angle = 0;
-    double normal = 2.26;
+    double normal = 2.255;
     double rate = 0.002;
     AnalogInput gyro;
     ElapsedTime time;

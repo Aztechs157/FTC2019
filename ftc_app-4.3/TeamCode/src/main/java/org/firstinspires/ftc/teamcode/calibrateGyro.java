@@ -41,16 +41,23 @@ public class calibrateGyro  extends LinearOpMode {
         accel.startListening();
         boolean toggle = true;
         values.add((double)0);
+        int counter = 0;
         while (opModeIsActive())
         {
+            counter++;
             //values.add(gyro.getVoltage());
-            double deltaTime = (double)time.time(TimeUnit.MILLISECONDS)/(double)1000;
+            double deltaTime = (double)time.time(TimeUnit.NANOSECONDS)/(double)(1000000000);
             double test = deltaTime;
             deltaTime = deltaTime-lastTime;
             lastTime = test;
-            time.reset();
+            telemetry.addData("t", deltaTime);
             values.add((accel.getX()+0.3)*deltaTime);
+            if (values.size() > 142)
+            {
+                //values.remove(0);
+            }
             double x = values.get(0);
+            telemetry.addData("x1", x);
             for (int i = 1; i < values.size()-2; i++)
             {
                 if (toggle)
@@ -63,9 +70,12 @@ public class calibrateGyro  extends LinearOpMode {
                     x += 2*values.get(i);
                 }
             }
+            telemetry.addData("x2", x);
             x += values.get(values.size()-1);
-            x = x * (((double)time.time(TimeUnit.MILLISECONDS)/(double)1000)/3);
-            telemetry.addData("x", x);
+            telemetry.addData("x3", x);
+            x = x * (((double)time.time(TimeUnit.MILLISECONDS)/(double)1000)/(double)3);
+            telemetry.addData("x4", x);
+            telemetry.addData("counter", counter);
             telemetry.update();
 
         }

@@ -391,7 +391,7 @@ public class opMode extends LinearOpMode
             orientation.update();
             drivemode(driver);
             double[] direction = orient(driver);
-            double motors[] = setmovement(direction[0], direction[1]);
+            double motors[] = setmovement(driver.right_stick_y, -driver.right_stick_x);
             double turn = driver.right_trigger-driver.left_trigger;
             turning(motors, direction[0], direction[1], turn);
             drive(motors);

@@ -18,6 +18,10 @@ import android.hardware.SensorEvent;
 
 @TeleOp
 public class calibrateGyro  extends LinearOpMode {
+
+    double angle = 0;
+    double normal = 2.255;
+    double rate = 0.002;
     private double sum(List<Double> ar)
     {
         double count = 0;
@@ -29,57 +33,51 @@ public class calibrateGyro  extends LinearOpMode {
     }
     public void runOpMode()
     {
-        AndroidAccelerometer accel = new AndroidAccelerometer();
+        class T extends Thread{
+            public ArrayList<Double> values = new ArrayList<Double>();
+            public ArrayList<Long> times = new ArrayList<Long>();
+            public Double normal;
+            private AnalogInput gyro;
+            private ElapsedTime time;
+            public void run(){
+                synchronized (normal) {
+                    gyro = hardwareMap.get(AnalogInput.class, "gyro");
+                    time = new ElapsedTime();
+                    normal = gyro.getVoltage();
+                }
 
-        ElapsedTime time = new ElapsedTime();
-        double lastTime = 0;
-        Position pos = new Position();
+                while (!Thread.interrupted())
+                {
+                    synchronized (values){ synchronized (times){
+                        values.add(gyro.getVoltage());
+                        times.add(time.now(TimeUnit.MILLISECONDS));}}
+                    time.reset();
+                }
+            }
+        }
+        //
+        double sumVal = 0;
+        //ElapsedTime time = new ElapsedTime();
         waitForStart();
-        List<Double> values= new ArrayList<Double>();
-        List<Double> accelValues = new ArrayList<Double>();
-        time.reset();
-        accel.startListening();
-        boolean toggle = true;
-        values.add((double)0);
-        int counter = 0;
+        //time.reset();
+        T thread = new T();
+        thread.start();
         while (opModeIsActive())
         {
-            counter++;
-            //values.add(gyro.getVoltage());
-            double deltaTime = (double)time.time(TimeUnit.NANOSECONDS)/(double)(1000000000);
-            double test = deltaTime;
-            deltaTime = deltaTime-lastTime;
-            lastTime = test;
-            telemetry.addData("t", deltaTime);
-            values.add((accel.getX()+0.3)*deltaTime);
-            if (values.size() > 142)
+            telemetry.addData("hello", "world"); //only works if this line is there
+            telemetry.update(); //DO NOT DELETE
+            sleep(20);
+            normal = thread.normal;
+            ArrayList<Double> vals = thread.values;
+            ArrayList<Long> times = thread.times;
+            double sum = 0;
+            for (int i = 0; i < vals.size()-1; i++)
             {
-                //values.remove(0);
+                sum += ((normal-vals.get(i))/rate)*times.get(i);
             }
-            double x = values.get(0);
-            telemetry.addData("x1", x);
-            for (int i = 1; i < values.size()-2; i++)
-            {
-                if (toggle)
-                {
-                    x += 4*values.get(i);
-                    toggle = !toggle;
-                }
-                else
-                {
-                    x += 2*values.get(i);
-                }
-            }
-            telemetry.addData("x2", x);
-            x += values.get(values.size()-1);
-            telemetry.addData("x3", x);
-            x = x * (((double)time.time(TimeUnit.MILLISECONDS)/(double)1000)/(double)3);
-            telemetry.addData("x4", x);
-            telemetry.addData("counter", counter);
-            telemetry.update();
-
+            telemetry.addData("angle?", sum);
         }
-
+        thread.interrupt();
     }
-
 }
+

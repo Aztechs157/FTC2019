@@ -9,6 +9,19 @@
  */
 
 
+/**
+ * Program: OpMode
+ *
+ * Definition: This program is a dice rolling game that can run with multiple players and win conditions
+ *
+ * Author: Jeremy Patrick and Tyler Silva
+ *
+ * Date: 12/6/18
+ *
+ * History: 1/16/2019: File Creation
+ */
+
+//********************************    IMPORTS   ***********************************
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,16 +30,13 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
-import com.sun.tools.javac.comp.Todo;
-import org.firstinspires.ftc.robotcore.external.android.AndroidOrientation;
 
 import static com.qualcomm.robotcore.hardware.Servo.Direction.REVERSE;
 
 @TeleOp
 public class opMode extends LinearOpMode
 {
-    //Initializes the variables
+//******************************    VARIABLES   **********************************
     private DcMotor driveMotors[] = {null, null, null, null};
     private DcMotor miscMotors[] = {null, null, null};
 
@@ -41,21 +51,34 @@ public class opMode extends LinearOpMode
     private AnalogGyro orientation;
     private boolean marker = true;
 
+//===========================  BEGIN CODE ==============================
 
+    /**
+     * Sets the drive mode, determines which stick is used to drive.
+      * @param input Gamepad input data
+     */
     void drivemode(Gamepad input)
     {
-        //Sets the drive mode, determines which stick is used to drive.
         if (input.back)
         {
             inverseControls = !inverseControls;
         }
     }
 
+    /**
+     * @param x A number being inputted.
+     * @return The absolute value of x.
+     */
     private double abs(double x)
     {
         return Math.abs(x);
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     private double[] orient(Gamepad input)
     {
         double angle = Math.atan2(input.right_stick_x, input.right_stick_y);
@@ -67,6 +90,12 @@ public class opMode extends LinearOpMode
 
     }
 
+    /**
+     * For more detail, see Math Docs.
+     * @param x The x value of the joystick
+     * @param y The y value of the joystick
+     * @return The values of the motors, before turning
+     */
     double[] setmovement(double x, double y)
     {
         //Sets the motor values for directional movement.
@@ -261,24 +290,34 @@ public class opMode extends LinearOpMode
         return motors;
     }
 
-
+    /**
+     * Sets the power of the motors based on the motor values.
+     * @param motors The motor values based on the above math.
+     */
     public void drive(double[] motors)
     {
-        //Sets the power of the motors based on the motor values
         driveMotors[0].setPower(motors[0]);
         driveMotors[1].setPower(motors[1]);
         driveMotors[2].setPower(motors[2]);
         driveMotors[3].setPower(motors[3]);
     }
 
+    /**
+     * @param x The number to be operated on.
+     * @return The inverse of the absolute value of x.
+     */
     private double n(double x)
     {
         return -abs(x);
     }
 
-    public void actuator(Gamepad input1)
+    /**
+     * Controls the movement of the actuator.
+     * @param input the input from the controller.
+     */
+    public void actuator(Gamepad input)
     {
-        miscMotors[0].setPower(-input1.right_stick_y);
+        miscMotors[0].setPower(-input.right_stick_y);
         /*
         //TODO: Get functional encoder wire to allow this part of the code to work
         //Controls the position of the actuator, with telemetry.
@@ -302,6 +341,11 @@ public class opMode extends LinearOpMode
         miscMotors[0].setPower(-val);*/
     }
 
+    /**
+     * Controls the intake mechanism.
+     * @param input Handles the input from the controller.
+     * @param miscMotors
+     */
     public void intake(Gamepad input, DcMotor miscMotors[])
     {
         //Controls the speed and direction of the intake.
@@ -402,6 +446,3 @@ public class opMode extends LinearOpMode
         }
     }
 }
-
-
-

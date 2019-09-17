@@ -358,19 +358,19 @@ public class autoMode_CraterSide extends LinearOpMode
         ElapsedTime time = new ElapsedTime();
 
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 8750)
+        while (time.time(TimeUnit.MILLISECONDS) < 8750 && opModeIsActive())
         {
             miscMotors[0].setPower(1);
         }
         miscMotors[0].setPower(0);
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 100)
+        while (time.time(TimeUnit.MILLISECONDS) < 200 && opModeIsActive())
         {
             miscMotors[0].setPower(0);
-            drive(setmovement(0, -1));
+            drive(setmovement(0, 1));
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 500)
+        while (time.time(TimeUnit.MILLISECONDS) < 300 && opModeIsActive())
         {
             //starts lowering actuator and moves robot toward crater
             miscMotors[0].setPower(-1); //gets to 500/8750
@@ -378,38 +378,39 @@ public class autoMode_CraterSide extends LinearOpMode
         }
         drive(new double[]{0, 0, 0, 0});
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS)<0)
+        while (time.time(TimeUnit.MILLISECONDS)<0 && opModeIsActive())
         {
             drive(turning(setmovement(0, 0), 0, 0, -1));
             miscMotors[0].setPower(0);
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS ) < 1150)
+        while (time.time(TimeUnit.MILLISECONDS ) < 1350 && opModeIsActive())
         {
             //miscMotors[0].setPower(-1); //gets to 1000/8750
-            drive(setmovement(0, -1));
+            drive(setmovement(-0.25, -1));
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS ) < 320)
+        while (time.time(TimeUnit.MILLISECONDS ) < 320 && opModeIsActive())
         {
             //miscMotors[0].setPower(-1); //gets to 1080/8750
             drive(turning(setmovement(0, 0), 0, 0, -1));
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 1250)
+        while (time.time(TimeUnit.MILLISECONDS) < 1350 && opModeIsActive())
         {
 
             //miscMotors[0].setPower(-1); //gets to 1000/8750
-            drive(setmovement(.2, -1));
+            drive(setmovement(.3, -1));
 
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 100)
+        while (time.time(TimeUnit.MILLISECONDS) < 100 && opModeIsActive())
         {
             servos[0].setPosition(.17);
             servos[1].setPosition(.15);
         }
-        while (opModeIsActive())
+        time.reset();
+        while (time.time(TimeUnit.MILLISECONDS) < 2100 &&opModeIsActive())
         {
             //moves robot toward
             drive(setmovement(0, 1));

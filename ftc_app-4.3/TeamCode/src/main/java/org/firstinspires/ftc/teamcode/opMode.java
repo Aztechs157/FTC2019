@@ -352,16 +352,28 @@ public class opMode extends LinearOpMode
         if (input.left_trigger > 0)
         {
             //reverse
-            miscMotors[1].setPower(-input.left_trigger / 2);
-            miscMotors[2].setPower(input.left_trigger / 2);
+            miscMotors[1].setPower(-input.left_trigger);
+            miscMotors[2].setPower(input.left_trigger);
         }
         else if (input.right_trigger > 0)
         {
             //forward
-            miscMotors[1].setPower(input.right_trigger / 2);
-            miscMotors[2].setPower(-input.right_trigger / 2);
+            miscMotors[1].setPower(input.right_trigger);
+            miscMotors[2].setPower(-input.right_trigger);
+        }
+        else
+        {
+            miscMotors[1].setPower(0);
+            miscMotors[2].setPower(0);
         }
     }
+
+    /**
+     * Controls the the holder for the marker.
+     * @param operator The second gamepad
+     * @param marker Whether or not the marker holder is open
+     * @param servos Controls the servo for the marker holder
+     */
 
     public void marker(Gamepad operator, boolean marker, Servo servos[])
     {
@@ -383,6 +395,15 @@ public class opMode extends LinearOpMode
         }
     }
 
+    /**
+     * Sets the telemetry
+     * @param inverseControls Whether the controls are inverted
+     * @param actuator Whether the actuator is up or down
+     * @param motors Motor values
+     * @param servos Servo values
+     * @param orientation Gyro orientation
+     */
+
     public void telemetry(boolean inverseControls, boolean actuator, double motors[],
                           Servo servos[], AnalogGyro orientation)
     {
@@ -402,6 +423,10 @@ public class opMode extends LinearOpMode
                 .addData("Orientation", orientation.angle);
         telemetry.update();
     }
+
+    /**
+     * Main op mode, runs each of the the functions and procedures and defines some stuff.
+     */
 
     @Override
     public void runOpMode()

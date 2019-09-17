@@ -410,32 +410,32 @@ public class autoMode extends LinearOpMode
         ElapsedTime time = new ElapsedTime();
 
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 8650)
+        while (time.time(TimeUnit.MILLISECONDS) < 8900 && opModeIsActive())
         {
             miscMotors[0].setPower(1); //lands
         }
         miscMotors[0].setPower(0);
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 100)
+        while (time.time(TimeUnit.MILLISECONDS) < 200 && opModeIsActive())
         {
             miscMotors[0].setPower(0);
-            drive(setmovement(0, -1)); //unhooks
+            drive(setmovement(0, 1)); //unhooks
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 1300)
+        while (time.time(TimeUnit.MILLISECONDS) < 1500 && opModeIsActive())
         {
             miscMotors[0].setPower(-1);
             drive(setmovement(1, -0.1)); //drives to the depot
         }
         drive(new double[]{0, 0, 0, 0});
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 130)
+        while (time.time(TimeUnit.MILLISECONDS) < 50 && opModeIsActive())
         {
             drive(turning(setmovement(0, 0), 0, 0, 1));
             miscMotors[0].setPower(-1); //turns
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 500)
+        while (time.time(TimeUnit.MILLISECONDS) < 500 && opModeIsActive())
         {
             miscMotors[0].setPower(-1); //opens the marker holder
             drive(setmovement(0, 0));
@@ -443,19 +443,19 @@ public class autoMode extends LinearOpMode
             servos[1].setPosition(.15); //lowers the climber
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 2250)
+        while (time.time(TimeUnit.MILLISECONDS) < 2250 && opModeIsActive())
         {
             miscMotors[0].setPower(0);
             drive(setmovement(0, 1)); //drives to the crater
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 100)
+        while (time.time(TimeUnit.MILLISECONDS) < 100 && opModeIsActive())
         {
             drive(turning(setmovement(0, 0), 0, 0, -1)); //turns to go into the crater
             miscMotors[0].setPower(0);
         }
         time.reset();
-        while (time.time(TimeUnit.MILLISECONDS) < 1000)
+        while (time.time(TimeUnit.MILLISECONDS) < 1000 && opModeIsActive())
         {
             miscMotors[0].setPower(0);
             drive(setmovement(0, 1)); //enters the crater
